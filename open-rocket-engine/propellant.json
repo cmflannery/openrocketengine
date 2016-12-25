@@ -1,5 +1,5 @@
 {
-  "Propellant Combinations": [
+  "Propellants_Dict": [
     {
       "Oxidizer" : "O2",
       "Fuel" : "RP1",
