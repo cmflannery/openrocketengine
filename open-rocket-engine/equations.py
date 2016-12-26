@@ -1,6 +1,14 @@
+#!/usr/bin/env python
+import numpy as np
 # Equations used to define engine parameters and performance
-# Distribution approved under MIT License
-
+__author__ = "Cameron Flannery"
+__copyright__ = "Copyright 2016"
+__credits__ = ["Cameron Flannery"]
+__license__ = "MIT"
+__version__ = "1.0"
+__maintainer__ = "Cameron Flannery"
+__email__ = "cmflannery@ucsd.edu"
+__status__ = "Development"
 
 # import test
 def import_test():
@@ -9,7 +17,7 @@ def import_test():
 
 # gravitational constant
 #   Generally,
-#     g0(option):
+#     get_g0(option):
 #   option == 0
 #     English Engineering (ft/s/s)
 #   option == 1
@@ -25,7 +33,7 @@ def get_g0(option):
 
 # exit pressure
 #   Generally,
-#     Pexit(option):
+#     get_Pexit(option):
 #   option == 0
 #     Sea-level, N/m**2
 #   option == 1
@@ -44,10 +52,10 @@ def get_Pexit(option):
 
 # total impulse
 #   Generally,
-#     It(var, option):
+#     get_It(var, option):
 #   option == 0:
 #     var[] = force, time
-#     It = force * time
+#     get_It = force * time
 def get_It(var, option):
     if option == 0:
         force = float(var[0])  # force float to preserve accuracy
@@ -59,13 +67,53 @@ def get_It(var, option):
 
 # specific impulse
 #   Generally,
-#     Isp(var, option)
+#     get_Isp(var, option)
+#   option == 0:
+#       Isp = force/(mdot * g0)
+#   option == 1:
+#       Isp = force/wdot
+#   option == 2:
+#       Isp = cee_star*Cf/g0
 def get_Isp(var, option):
     if option == 0:
         force = float(var[0])
         mdot = float(var[1])
+        g0 = float(var[2])
         return force/(mdot*g0)
     elif option == 1:
         force = float(vat[0])
         wdot = float(var[1])
         return force/wdot
+    elif option == 2:
+        cee_star = float(var[0])
+        Cf = float(var[1])
+        g0 = float(var[2])
+        return cee_star*Cf/g0
+
+
+# c* (characteristic velocity)
+#   Generally.
+#       get_cee_star(var, option)
+#   option == 0:
+#
+def get_cee_star(var, option):
+    if option == 0:
+        Rspecific = float(var[0])
+        Tc_ns = float(var[1])
+        g0 = float(var[2])
+        gamma = float(var[3])
+        cee_star = np.sqrt(g0*gamma*Rspecific*Tc_ns) / (gamma *
+                    np.sqrt((2/(gamma+1))**((gamma+1)/(gamma-1))))
+        return cee_star
+
+
+# Cf (Coefficient of thrust)
+#   Generally,
+#       get_Cf(var, option)
+def get_Cf(var, option):
+    if option == 0:
+        pe = var[0]  # exit pressure
+        pc = var[1]  # chamber pressure at nozzle stagnation
+        pa = var[2]  # ambient pressure
+        gamma = var[3]  # ratio of coefficients of heat
+        epsilon = var[4]  # nozzle area expansion ratio
