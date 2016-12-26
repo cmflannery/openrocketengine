@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 import numpy as np
-# chemistry,py calculates propellant properties and chooses optimum values
+# curces.py calculates propellant properties and chooses optimum values
 # based on use input
 __author__ = "Cameron Flannery"
 __copyright__ = "Copyright 2016"

@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 from equations import *
 import propellant as prop
+from prompts import *
 # Equations used to define engine parameters and performance
 __author__ = "Cameron Flannery"
 __copyright__ = "Copyright 2016"
@@ -13,7 +14,8 @@ __status__ = "Development"
 
 
 def main():
-    prop.prompt_for_propellants()
+    thrust = prompt_for_thrust()
+    propellants = prop.prompt_for_propellants()
 
 
 if __name__ == "__main__":
