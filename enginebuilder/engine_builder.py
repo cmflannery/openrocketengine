@@ -1,7 +1,15 @@
 #!/usr/bin/env python
-from equations import *
-import propellant as prop
+import os
+import sys
+import inspect
+# allow imports from subfolder
+cmd_subfolder = os.path.realpath(os.path.abspath(os.path.join(os.path.split
+        (inspect.getfile(inspect.currentframe()))[0], "performance")))
+if cmd_subfolder not in sys.path:
+    sys.path.insert(0, cmd_subfolder)
+# imports from 'common' subfolder
 from prompts import *
+from calculations import *
 # Equations used to define engine parameters and performance
 __author__ = "Cameron Flannery"
 __copyright__ = "Copyright 2016"
@@ -14,7 +22,8 @@ __status__ = "Development"
 
 
 def main():
-    thrust = prompt_for_thrust()
+    units = prompt_for_units()
+    thrust = prompt_for_thrust(units)
     propellants = prop.prompt_for_propellants()
 
 

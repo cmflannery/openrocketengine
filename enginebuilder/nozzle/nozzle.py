@@ -1,7 +1,8 @@
 #!/usr/bin/env python
-import numpy as np
-# curces.py calculates propellant properties and chooses optimum values
-# based on use input
+from equations import *
+import propellant as prop
+# nozzle.py calculated the dimensions of the nozzle based on user input and
+# calculated performance parameters
 __author__ = "Cameron Flannery"
 __copyright__ = "Copyright 2016"
 __credits__ = ["Cameron Flannery"]

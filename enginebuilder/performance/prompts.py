@@ -12,10 +12,31 @@ __email__ = "cmflannery@ucsd.edu"
 __status__ = "Development"
 
 
-def prompt_for_thrust():
+def prompt_for_units():
     confirmed = False
     while not(confirmed):
-        thrust = raw_input("Enter the target thrust: ")
+        units = raw_input("Enter '0' to use English Engineering Units and '1' \
+                            to use Metric Units: ")
+        if units == "0":
+            print "Using English Engineering Units."
+            confirmed = True
+        elif units == "1":
+            print "Using Metric Units."
+            confirmed = True
+        else:
+            print "Enter '1' or '0'"
+    return units
+
+
+def prompt_for_thrust(units):
+    confirmed = False
+    while not(confirmed):
+        if units == "0":
+            thrust = raw_input("Enter the target thrust (lbf): ")
+        elif units == "1":
+            thrust = raw_input("Enter the target thrust (N): ")
+        else:
+            print "Error: Units not properly declared."
         print "Thrust: ",
         print thrust
         while True:

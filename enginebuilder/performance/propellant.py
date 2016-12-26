@@ -41,28 +41,6 @@ def pull_MR(propellants, propellant_data):
     return 0
 
 
-# pull_MR(propellants[], propellant_data[])
-#   propellants[0] : Oxidizer
-#   propellants[1] : Fuel
-def pull_gamma(propellants, propellant_data):
-    for prop in propellant_data["Propellants_Dict"]:
-        if (prop["Oxidizer"] == propellants[0]) and \
-                (prop["Fuel"] == propellants[1]):
-            return prop["gamma"]
-    return 0
-
-
-# pull_MR(propellants[], propellant_data[])
-#   propellants[0] : Oxidizer
-#   propellants[1] : Fuel
-def pull_Tc(propellants, propellant_data):
-    for prop in propellant_data["Propellants_Dict"]:
-        if (prop["Oxidizer"] == propellants[0]) and \
-                (prop["Fuel"] == propellants[1]):
-            return prop["Tc"]
-    return 0
-
-
 # main()
 #   used for testing and debugging
 #   only executes when main script
