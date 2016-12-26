@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import os
 import json
+from prompts import *
 # chemistry,py calculates propellant properties and chooses optimum values
 # based on use input
 __author__ = "Cameron Flannery"
