@@ -18,3 +18,4 @@ def get_Athroat(var, option):
     Isp = float(var[1])
     pchamber = float(var[2])
     Cf = float(var[3])
+    return wdot*Isp/(pchamber*Cf)    
