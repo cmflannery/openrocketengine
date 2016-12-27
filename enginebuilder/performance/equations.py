@@ -154,6 +154,9 @@ def get_pthroat(var, option):
 #
 def get_epsilon(var, option):
     if option == 0:
-        epsilon = ((2/(gamma+1))**(1/(gamma-1))*(pc/pe)**(1/gamma)) /
+        gamma = var[0]
+        pc = var[1]
+        pe = var[2]
+        epsilon = ((2/(gamma+1))**(1/(gamma-1))*(pc/pe)**(1/gamma)) / \
                 np.sqrt(((gamama+1)/(gamma-1))*(1-(pe/pc)**((gamma-1)/gamma)))
         return epsilon

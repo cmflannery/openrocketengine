@@ -13,8 +13,7 @@ if cmd_subfolder not in sys.path:
     sys.path.insert(0, cmd_subfolder)
 # imports from 'common' subfolder
 from prompts import *
-from calculations import *
-from propellants import *
+from propellant import *
 # Class definitions used to build engines.
 # Manages engine development scripts
 __author__ = "Cameron Flannery"
@@ -29,22 +28,27 @@ __status__ = "Development"
 
 class engine:
     def __init__(self):
-        prompts()
-        calc_performance()
         self.pchamber = 68
+        self.pexit = 1  # add option to choose this
 
-    def prompts(self):
+    def start_building(self):
+        self.pprompts()
+        self.calc_performance(self.thrust, self.propellants, self.units)
+        self.calc_nozzle()
+
+    def pprompts(self):
         self.units = prompt_for_units()
-        self.thrust = prompt_for_thrust(units)
+        self.thrust = prompt_for_thrust(self.units)
         self.propellants = prompt_for_propellants()
 
     def calc_performance(self, thrust, propellants, units):
         self.Isp = pull_Isp(propellants)
         self.gamma = pull_gamma(propellants)
         self.Tc = pull_Tc(propellants)
-        self.wdot = get_wdot([thrust, Isp], 0)
-        self.pthroat = get_pthroat([pchamber, gamma], 0)
-        self.Cf = get_Cf
+        self.wdot = get_wdot([thrust, self.Isp], 0)
+        self.pthroat = get_pthroat([self.pchamber, self.gamma], 0)
+        self.epsilon = get_epsilon([self.gamma, self.pchamber, self.pexit], 0)
+        self.Cf = get_Cf()  # need to get
 
     def calc_nozzle(self, thrust, propellants, units):
         self.Athroat = get_Athroat(self.wdot, self.Isp, self.pchamber, self.Cf)
@@ -52,7 +56,8 @@ class engine:
 
 def main():
     eng = engine()
-    print eng.propellants
+    eng.start_building()
+    print eng.Athroat
 
 
 if __name__ == "__main__":
