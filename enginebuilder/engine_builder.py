@@ -10,7 +10,8 @@ if cmd_subfolder not in sys.path:
 # imports from 'common' subfolder
 from prompts import *
 from calculations import *
-# Equations used to define engine parameters and performance
+# Class definitions used to build engines.
+# Manages engine development scripts
 __author__ = "Cameron Flannery"
 __copyright__ = "Copyright 2016"
 __credits__ = ["Cameron Flannery"]
@@ -25,6 +26,8 @@ def main():
     units = prompt_for_units()
     thrust = prompt_for_thrust(units)
     propellants = prop.prompt_for_propellants()
+
+    calc_performance(thrust, propellants, units)
 
 
 if __name__ == "__main__":

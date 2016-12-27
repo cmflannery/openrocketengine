@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 from equations import *
-import propellant as prop
 # cooling.py contains equations relevant to the design of cooling for the
 # engine. This script provides values necessary to design regenerative and
 # film cooling

@@ -118,7 +118,9 @@ def get_Cf(var, option):
         pa = var[2]  # ambient pressure
         gamma = var[3]  # ratio of coefficients of heat
         epsilon = var[4]  # nozzle area expansion ratio
-        Cf = 0  # ** needs to be updated **
+        Cf = np.sqrt((2*gamma**2)/(gamma-1) *
+                (2/(gamma+1))**((gamma+1)/(gamma-1)) *
+                (1-(pe/pc)**((gamma-1)/gamma))) + epsilon*((pe-pa)/pc)
         return Cf
 
 
@@ -128,7 +130,27 @@ def get_Cf(var, option):
 #   Option == 0:
 def get_wdot(var, option):
     if option == 0:
-        force = var[0]
-        Isp = var[1]
+        force = float(var[0])
+        Isp = float(var[1])
         wdot = force/Isp
         return wdot
+
+
+# Pthroat (nozzle throat pressure)
+#   Generally,
+#       get_wdot(var, option)
+#   Option == 0:
+def get_pthroat(var, option):
+    if option == 0:
+        pchamber = float(var[0])
+        gamma = float(var[1])
+        pthroat = pchamber*((gamma + 1)/2)**((-gamma)/(gamma-1))
+        return pthroat
+
+
+# epsilon (theoretical expansion ratio)
+#   option == 0:
+#       Sea-level
+#
+def get_epsilon(var, option):
+    if option == 0

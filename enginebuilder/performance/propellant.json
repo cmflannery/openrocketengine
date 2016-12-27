@@ -1,5 +1,9 @@
 {
   "Data_Source": "http://www.braeunig.us/space/propel.htm",
+  "Assumptions" :{
+    "Chamber Pressure" : "68 atm",
+    "Units" : "Metric"
+  },
   "Propellants_Dict": [
     {
       "Oxidizer" : "O2",
@@ -13,7 +17,9 @@
       "Fuel" : "CH4",
       "MR" : 2.77,
       "Isp" : 299,
-      "MW" : 48.04
+      "MW" : 48.04,
+      "Tc" : 3375,
+      "gamma" : 1.209
     },
     {
       "Oxidizer" : "O2",

@@ -1,5 +1,6 @@
 Python 2.7
 
 python modules:
-os library
+os
 json
+numpy
