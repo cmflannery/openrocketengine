@@ -59,6 +59,8 @@ class engine:
         else:
             self.thrust = prompt_for_thrust(self.units)
             self.propellants = prompt_for_propellants()
+            self.alt = prompt_for_altitude()
+            self.FoS = prompt_for_FoS()
 
     def calc_performance(self, thrust, propellants, units):
         self.Isp = pull_Isp(propellants)

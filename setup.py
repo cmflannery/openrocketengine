@@ -1,7 +1,11 @@
-# setup.py package and distribution managaement
-if __name__ == "__main__":
-    try:
-        print "Installing..."
-    except KeyboardInterrupt:
-        print "Keyboard Interrupt"
-        print "safely exiting..."
+from setuptools import setup
+
+setup(name='openeng',
+      version='1.0',
+      description='Automated design of liquid rocket engines',
+      url='http://github.com/cmflannery/openrocketengine',
+      author='Cameron Flannery',
+      author_email='cmflannery@ucsd.edu',
+      license='MIT',
+      packages=['openeng'],
+      zip_safe=False)

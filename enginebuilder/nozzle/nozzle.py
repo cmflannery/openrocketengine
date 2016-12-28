@@ -13,9 +13,21 @@ __status__ = "Development"
 
 
 # Athroat (nozzle throat area)
+#   expects pchamber in atm
 def get_Athroat(var, option):
-    wdot = float(var[0])
-    Isp = float(var[1])
-    pchamber = float(var[2])
-    Cf = float(var[3])
-    return wdot*Isp/(pchamber*Cf)    
+    if option == 0:
+        wdot = float(var[0])
+        Isp = float(var[1])
+        pchamber = float(var[2])
+        pchamber = pchamber * 14.6959487758  # convert from atm to psi
+        Cf = float(var[3])
+        return wdot*Isp/(pchamber*Cf)
+    return -1  # error, invalid option
+
+
+def get_Aexit(var, option):
+    if option == 0:
+        epsilon = var[0]
+        Athroat = var[1]
+        return epsilon*Athroat
+    return -1  # error, invalid option

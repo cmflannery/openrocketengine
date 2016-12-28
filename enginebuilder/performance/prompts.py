@@ -15,7 +15,7 @@ __status__ = "Development"
 def prompt_for_altitude():
     confirmed = False
     while not(confirmed):
-        alt = raw_input("Enter '0' to design an engine for Sea-level or '1' to design an engine for vacuum")
+        alt = raw_input("Enter '0' to design an engine for Sea-level or '1' for vacuum: ")
         if alt == "0":
             print "Designing for Sea-level"
             confirmed = True
@@ -30,15 +30,15 @@ def prompt_for_altitude():
 def prompt_for_units():
     confirmed = False
     while not(confirmed):
-        units = raw_input("Enter '0' to use English Engineering Units and '1' to use Metric Units (Note: Enter 'debug' to begin debug state): ")
+        units = raw_input("Enter '0' to use English Engineering Units and '1' to use Metric Units \n(Note: Enter 'test' to use test case): ")
         if units == "0":
             print "Using English Engineering Units."
             confirmed = True
         elif units == "1":
             print "Using Metric Units."
             confirmed = True
-        elif units.lower() == "debug":
-            return "debug"
+        elif units.lower() == "test":
+            return "test"
         else:
             print "Enter '1' or '0'"
     return units
@@ -92,3 +92,21 @@ def prompt_for_propellants():
             else:
                 print "Please enter Y or n"
     return propellants
+
+
+def prompt_for_FoS():
+    confirmed = False
+    while not(confirmed):
+        FoS = raw_input("Enter the desired factor of safety. \n(Note: 1.4 standard): ")
+        print "FoS =",
+        print FoS
+        response = raw_input("Is this value correct? [Y/n]: ")
+        while True:
+            if response.lower() == "y":
+                confirmed = True
+                return FoS
+            elif response.lower() == "n":
+                break
+            else:
+                print "Please enter 'Y' or 'n'"
+    return FoS

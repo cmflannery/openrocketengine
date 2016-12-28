@@ -4,3 +4,5 @@ python modules:
 os
 json
 numpy
+inspect
+sys

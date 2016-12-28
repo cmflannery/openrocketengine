@@ -113,11 +113,11 @@ def get_cee_star(var, option):
 #       get_Cf(var, option)
 def get_Cf(var, option):
     if option == 0:
-        pe = var[0]  # exit pressure
-        pc = var[1]  # chamber pressure at nozzle stagnation
-        pa = var[2]  # ambient pressure
-        gamma = var[3]  # ratio of coefficients of heat
-        epsilon = var[4]  # nozzle area expansion ratio
+        pe = float(var[0])  # exit pressure
+        pc = float(var[1])  # chamber pressure at nozzle stagnation
+        pa = float(var[2])  # ambient pressure
+        gamma = float(var[3])  # ratio of coefficients of heat
+        epsilon = float(var[4])  # nozzle area expansion ratio
         Cf = np.sqrt((2*gamma**2)/(gamma-1) *
                      (2/(gamma+1))**((gamma+1)/(gamma-1)) *
                      (1-(pe/pc)**((gamma-1)/gamma))) + epsilon*((pe-pa)/pc)
@@ -154,9 +154,9 @@ def get_pthroat(var, option):
 #
 def get_epsilon(var, option):
     if option == 0:
-        gamma = var[0]
-        pc = var[1]
-        pe = var[2]
+        gamma = float(var[0])
+        pc = float(var[1])
+        pe = float(var[2])
         epsilon = ((2/(gamma+1))**(1/(gamma-1))*(pc/pe)**(1/gamma)) / \
             np.sqrt(((gamma+1)/(gamma-1))*(1-(pe/pc)**((gamma-1)/gamma)))
         return epsilon
