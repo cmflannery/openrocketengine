@@ -60,13 +60,13 @@ def prompt_for_thrust(units):
             verify = verify.upper()
             if verify == "Y":
                 confirmed = True
-                return thrust
+                return float(thrust)
             elif verify == "N":
                 confirmed = False
                 break
             else:
                 print "Enter 'Y' or 'n'"
-
+    return -1
 
 # prompt_for_propellants():
 #   prompt user for propellants
@@ -77,6 +77,8 @@ def prompt_for_propellants():
         propellants = []
         propellants.append(raw_input("Enter oxidizer in atomic forumula, i.e. O2: "))
         propellants.append(raw_input("Enter fuel in atomic formula/shorthand, i.e. RP1: "))
+        propellants[0] = propellants[0].upper()
+        propellants[1] = propellants[1].upper()
         print "Oxidizer: ",
         print propellants[0]
         print "Fuel: ",
@@ -109,4 +111,4 @@ def prompt_for_FoS():
                 break
             else:
                 print "Please enter 'Y' or 'n'"
-    return FoS
+    return float(FoS)

@@ -1,5 +1,6 @@
 {
   "Data_Source": "http://www.braeunig.us/space/propel.htm",
+  "Data_Source1" : "http://www.braeunig.us/space/comb.htm",
   "Assumptions" :{
     "Chamber Pressure" : "68 atm",
     "Units" : "Metric"
@@ -11,8 +12,8 @@
       "MR" : 2.29,
       "Isp" : 289,
       "MW" : 207,
-      "Tc" : "False",
-      "gamma" : "False"
+      "Tc" : 3540,
+      "gamma" : 1.219
     },
     {
       "Oxidizer" : "O2",
@@ -26,11 +27,11 @@
     {
       "Oxidizer" : "O2",
       "Fuel" : "H2",
-      "MR" : 5.00,
+      "MR" : 5.75,
       "Isp" : 381,
       "MW" : 34.016,
-      "Tc" : "False",
-      "gamma" : "False"
+      "Tc" : 3450,
+      "gamma" : 1.201
     }
   ]
 }

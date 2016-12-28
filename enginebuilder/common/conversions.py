@@ -11,11 +11,15 @@ __email__ = "cmflannery@ucsd.edu"
 __status__ = "Development"
 
 
-# convert_pressure
+# convert_pressure (expects atm input)
 # val - values to be converted
-# input - declares input form
 # output - declares output form
-def convert_pressure(val, inputt, output):
+#   output == 0
+def convert_pressure(val, units):
+    if units == "0":
+        return float(val) * 14.6959487758  # atm -> psi
+    elif units == "1":
+        return float(val) * 101325  # atm -> N/m^2
     # code here
     return 0
 

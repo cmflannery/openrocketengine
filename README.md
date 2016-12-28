@@ -5,7 +5,8 @@ The equations used in this program were taken from [_Design of Liquid Propellant
 
 ## Release Notes
 __Beta Release__
-Currently, the program does not compute propellant curves. As a result, chamber pressure can not be optimized, and a value of 75 atm is chosen. This is a dangerous assumption. Until [curves.py](https://github.com/cmflannery/openrocketengine/enginebuilder/performance/curves.py) is complete, the results obtained with openrocketengine should not be consulted in the design of any liquid rocket engine.
+
+Currently, the program does not compute propellant curves. Consequently, chamber pressure can not be optimized, and a value of 75 atm is chosen. This is a dangerous assumption. Until [curves.py](https://github.com/cmflannery/openrocketengine/enginebuilder/performance/curves.py) is complete, the results obtained with openrocketengine should not be consulted in the design of any liquid rocket engine.
 
 ## Contributing
 Community support is welcome. Pull requests are encouraged for meaningful changes.

@@ -21,6 +21,7 @@ from propellant import *
 from equations import *
 from nozzle import *
 from gen_output import *
+from conversions import *
 # Class definitions used to build engines.
 # Manages engine development scripts
 __author__ = "Cameron Flannery"
@@ -36,30 +37,38 @@ __status__ = "Development"
 # engine class retrieves and stores all outputs for each run
 class engine:
     def __init__(self):
-        self.pchamber = 75
-        self.pexit = 1  # add option to choose this
-        self.pambient = 1
+        self.pchamber = 75.  # assumption for testing
 
     def start_building(self):
         self.pprompts()
         self.calc_performance(self.thrust, self.propellants, self.units)
         self.calc_nozzle(self.thrust, self.propellants, self.units)
+        create_xlsx(self)
 
     def pprompts(self):
         self.units = prompt_for_units()
         if self.units == "test":
             self.thrust = 500
             self.propellants = ["O2", "CH4"]
+            self.pambient = 1
+            self.pexit = 1
             print "\nSetting test parameters: "
             print "\t Thrust =",
             print self.thrust
             print "\t Propellants:",
             print self.propellants
             print "\n"
+            self.units = "0"
         else:
             self.thrust = prompt_for_thrust(self.units)
             self.propellants = prompt_for_propellants()
             self.alt = prompt_for_altitude()
+            if self.alt == "0":
+                self.pambient = 1
+                self.pexit = 1
+            elif self.alt == "1":
+                self.pambient = 0
+                self.pexit = 1  # very non-ideal assumption.. how can this be improved??
             self.FoS = prompt_for_FoS()
 
     def calc_performance(self, thrust, propellants, units):
@@ -73,7 +82,8 @@ class engine:
                           self.epsilon], 0)  # need to get
 
     def calc_nozzle(self, thrust, propellants, units):
-        self.Athroat = get_Athroat([self.wdot, self.Isp, self.pchamber,
+        pchamber_converted = convert_pressure(self.pchamber, self.units)
+        self.Athroat = get_Athroat([self.wdot, self.Isp, pchamber_converted,
                                     self.Cf], 0)
         self.Aexit = get_Aexit([self.epsilon, self.Athroat], 0)
 
@@ -83,30 +93,6 @@ def main():
     print "Lets build a rocket engine!\n"
     eng = engine()
     eng.start_building()
-
-    # temporary output until gen_output.py is completed
-    print "pthroat:",
-    print eng.pthroat,
-    print "atm"
-
-    print "wdot",
-    print eng.wdot,
-    print "lb/s"
-
-    print "Cf:",
-    print eng.Cf
-
-    print "epsilon",
-    print eng.epsilon
-
-    print "Athroat",
-    print eng.Athroat,
-    print "in^2"
-
-    print "Aexit",
-    print eng.Aexit,
-    print "in^2"
-
 
 if __name__ == "__main__":
     main()
