@@ -10,7 +10,9 @@
       "Fuel" : "RP1",
       "MR" : 2.29,
       "Isp" : 289,
-      "MW" : 207
+      "MW" : 207,
+      "Tc" : "False",
+      "gamma" : "False"
     },
     {
       "Oxidizer" : "O2",
@@ -26,7 +28,9 @@
       "Fuel" : "H2",
       "MR" : 5.00,
       "Isp" : 381,
-      "MW" : 34.016
+      "MW" : 34.016,
+      "Tc" : "False",
+      "gamma" : "False"
     }
   ]
 }

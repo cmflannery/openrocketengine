@@ -12,17 +12,33 @@ __email__ = "cmflannery@ucsd.edu"
 __status__ = "Development"
 
 
+def prompt_for_altitude():
+    confirmed = False
+    while not(confirmed):
+        alt = raw_input("Enter '0' to design an engine for Sea-level or '1' to design an engine for vacuum")
+        if alt == "0":
+            print "Designing for Sea-level"
+            confirmed = True
+        elif alt == "1":
+            print "Designing for Vacuum."
+            confirmed = True
+        else:
+            print "Enter '1' or '0'"
+    return alt
+
+
 def prompt_for_units():
     confirmed = False
     while not(confirmed):
-        units = raw_input("Enter '0' to use English Engineering Units and '1' \
-                            to use Metric Units: ")
+        units = raw_input("Enter '0' to use English Engineering Units and '1' to use Metric Units (Note: Enter 'debug' to begin debug state): ")
         if units == "0":
             print "Using English Engineering Units."
             confirmed = True
         elif units == "1":
             print "Using Metric Units."
             confirmed = True
+        elif units.lower() == "debug":
+            return "debug"
         else:
             print "Enter '1' or '0'"
     return units
@@ -59,10 +75,8 @@ def prompt_for_propellants():
     propellants = []
     while not(confirmed):
         propellants = []
-        propellants.append(raw_input("Enter oxidizer in atomic forumula, \
-                i.e. O2: "))
-        propellants.append(raw_input("Enter fuel in atomic formula/shorthand, \
-                i.e. RP1: "))
+        propellants.append(raw_input("Enter oxidizer in atomic forumula, i.e. O2: "))
+        propellants.append(raw_input("Enter fuel in atomic formula/shorthand, i.e. RP1: "))
         print "Oxidizer: ",
         print propellants[0]
         print "Fuel: ",

@@ -103,8 +103,8 @@ def get_cee_star(var, option):
         Tc_ns = float(var[1])
         g0 = float(var[2])
         gamma = float(var[3])
-        cee_star = np.sqrt(g0*gamma*Rspecific*Tc_ns) / (gamma *
-                    np.sqrt((2/(gamma+1))**((gamma+1)/(gamma-1))))
+        cee_star = np.sqrt(g0*gamma*Rspecific*Tc_ns) / \
+            (gamma * np.sqrt((2/(gamma+1))**((gamma+1)/(gamma-1))))
         return cee_star
 
 
@@ -119,8 +119,8 @@ def get_Cf(var, option):
         gamma = var[3]  # ratio of coefficients of heat
         epsilon = var[4]  # nozzle area expansion ratio
         Cf = np.sqrt((2*gamma**2)/(gamma-1) *
-                (2/(gamma+1))**((gamma+1)/(gamma-1)) *
-                (1-(pe/pc)**((gamma-1)/gamma))) + epsilon*((pe-pa)/pc)
+                     (2/(gamma+1))**((gamma+1)/(gamma-1)) *
+                     (1-(pe/pc)**((gamma-1)/gamma))) + epsilon*((pe-pa)/pc)
         return Cf
 
 
@@ -158,5 +158,5 @@ def get_epsilon(var, option):
         pc = var[1]
         pe = var[2]
         epsilon = ((2/(gamma+1))**(1/(gamma-1))*(pc/pe)**(1/gamma)) / \
-                np.sqrt(((gamama+1)/(gamma-1))*(1-(pe/pc)**((gamma-1)/gamma)))
+            np.sqrt(((gamma+1)/(gamma-1))*(1-(pe/pc)**((gamma-1)/gamma)))
         return epsilon
