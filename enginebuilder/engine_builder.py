@@ -89,7 +89,11 @@ class engine:
 
 
 def main():
-    os.system('cls')  # clear console screen
+    try:
+        os.system('cls')  # clear console screen
+        os.system('clear')
+    except SystemError:
+        os.system('clear')
     print "Lets build a rocket engine!\n"
     eng = engine()
     eng.start_building()
