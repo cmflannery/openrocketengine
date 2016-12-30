@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+    #!/usr/bin/env python
 import os
 import sys
 import inspect
@@ -90,9 +90,8 @@ class engine:
 
 def main():
     try:
-        os.system('cls')  # clear console screen
-        os.system('clear')
-    except SystemError:
+        os.system('cls')
+    except OSError:
         os.system('clear')
     print "Lets build a rocket engine!\n"
     eng = engine()

@@ -10,7 +10,7 @@ __version__ = "1.0"
 __maintainer__ = "Cameron Flannery"
 __email__ = "cmflannery@ucsd.edu"
 __status__ = "Development"
-
+w3
 
 # Athroat (nozzle throat area)
 #   expects pchamber in atm
@@ -29,4 +29,12 @@ def get_Aexit(var, option):
         epsilon = float(var[0])
         Athroat = float(var[1])
         return epsilon*Athroat
+    return -1  # error, invalid option
+
+
+def get_Vchamber(var, option):
+    if option == 0:
+        L_star = float(var[0])
+        Achamber = float(var[1])
+        return L_star*Achamber
     return -1  # error, invalid option

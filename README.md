@@ -4,7 +4,7 @@
 The equations used in this program were taken from [_Design of Liquid Propellant Rocket Engines_](https://ntrs.nasa.gov/archive/nasa/casi.ntrs.nasa.gov/19710019929.pdf) by Huzel and Huang.
 
 ## Running openrocketengine
-To run openrocketengine, execute (engine_builder.py)[https://github.com/cmflannery/openrocketengine] with a python 2.7 interpreter.
+To run openrocketengine, execute [engine_builder.py](https://github.com/cmflannery/openrocketengine) with a python 2.7 interpreter.
 
 ## Release Notes
 __Beta Release__
