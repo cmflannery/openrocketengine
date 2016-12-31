@@ -43,7 +43,6 @@ class outputs:
 
         return 0
 
-
     def write_units(self):
         if self.engine.parameters.units == "0":
             self.worksheet.write('D3', 'lbf')
@@ -53,7 +52,6 @@ class outputs:
             self.worksheet.write('D3', 'N')
             self.worksheet.write('D4', 'm^2')
             self.worksheet.write('D5', 'm^2')
-
 
     def create_output_dir(self):
         if not os.path.exists(self.output_dir):

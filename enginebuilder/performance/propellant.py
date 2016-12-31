@@ -28,6 +28,7 @@ class prop_values:
         self.MR = self.pull_MR()
         self.Tc = self.pull_Tc()
         self.gamma = self.pull_gamma()
+        self.L_star = self.pull_L_star()
 
     # pull_Isp(propellants[], propellant_data[])
     #   propellants[0] : Oxidizer
@@ -74,4 +75,11 @@ class prop_values:
             if (prop["Oxidizer"] == self.propellants[0]) and \
                     (prop["Fuel"] == self.propellants[1]):
                 return prop["MW"]
+        return 0
+
+    def pull_L_star(self):
+        for prop in propellant_data["Propellants_Dict"]:
+            if (prop["Oxidizer"] == self.propellants[0]) and \
+                    (prop["Fuel"] == self.propellants[1]):
+                return prop["L_star"]
         return 0

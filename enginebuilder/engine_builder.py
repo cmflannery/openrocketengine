@@ -43,9 +43,12 @@ class engine:
         self.pchamber = 75.0  # assumption for testing
 
     def start_building(self):
+        # create parameters obj
         self.parameters = parameters()
+        # create performance/equations obj
         self.performance = performance(self.parameters)
-        self.nozzle = nozzle(self.performance, self.parameters)  # create nozzle dimension obj
+        # create nozzle dimension obj
+        self.nozzle = nozzle(self.performance, self.parameters)
         # self.outputs = outputs(self)
         print self.performance.wdot
         print self.parameters.Isp
@@ -55,14 +58,15 @@ class engine:
         print self.performance.epsilon
         print self.nozzle.Athroat
         print self.nozzle.Aexit
+        print self.nozzle.Vchamber
 
 
 class parameters:
     def __init__(self):
-        self.pchamber = 75.0  # constant, assumption
+        self.pchamber = 75.00  # constant, assumption
         self.start_prompts()
-        self.convert()
         self.start_propellants()
+        self.convert()
 
     def start_prompts(self):
         self.units = prompt_for_units()
@@ -87,20 +91,26 @@ class parameters:
                 self.pexit = 1.00
             elif self.alt == "1":
                 self.pambient = 0.00
-                self.pexit = 1.00  # very non-ideal assumption.. how can this be improved??
+                # needs to be improved
+                self.pexit = 1.00  # very non-ideal assumption..
             self.FoS = prompt_for_FoS()
 
     def start_propellants(self):
+        # create prop_values obj
         prop_data = prop_values(self.propellants)
         self.Isp = prop_data.Isp
         self.MR = prop_data.MR
         self.Tc = prop_data.Tc
         self.gamma = prop_data.gamma
+        self.L_star = prop_data.L_star
 
     def convert(self):
-        self.pchamber = self.pchamber * 14.6959487758  # temporary implicit unit conversion until unit_converte is finished
+        # temporary implicit unit conversions until unit_converte is finished
+        self.pchamber = self.pchamber * 14.6959487758
         self.pambient = self.pambient * 14.6959487758
         self.pexit = self.pexit * 14.6959487758
+        self.L_star = self.L_star / 2.54  # temporary implicit conversion
+
 
 def main():
     try:

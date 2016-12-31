@@ -20,7 +20,8 @@ class nozzle:
     def gen_nozzle_dims(self):
         self.Athroat = self.get_Athroat()
         self.Aexit = self.get_Aexit()
-        # self.Vchamber = self.get_Vchamber()
+        self.Vchamber = self.get_Vchamber()
+        self.Aachamber = self.get_Achamber()
 
     # Athroat (nozzle throat area)
     #   expects pchamber in atm
@@ -32,4 +33,7 @@ class nozzle:
         return self.performance.epsilon * self.Athroat
 
     def get_Vchamber(self):
-        return self.performance.L_star * self.Achamber
+        return self.parameters.L_star * self.Athroat
+
+    def get_Achamber(self):
+        return -1

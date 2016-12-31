@@ -4,7 +4,8 @@
   "Assumptions" :{
     "Chamber Pressure" : "68 atm",
     "Units" : "Metric",
-    "MW_Units" : "kg/mol"
+    "MW_Units" : "kg/mol",
+    "L_star_Units" : "cm"
   },
   "Propellants_Dict": [
     {
@@ -23,7 +24,8 @@
       "Isp" : 299.00,
       "MW" : 0.04804,
       "Tc" : 3375.00,
-      "gamma" : 1.209
+      "gamma" : 1.209,
+      "L_star" : 110.00
     },
     {
       "Oxidizer" : "O2",
