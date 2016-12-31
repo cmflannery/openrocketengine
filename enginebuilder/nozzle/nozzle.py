@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-from equations import *
 # nozzle.py calculated the dimensions of the nozzle based on user input and
 # calculated performance parameters
 __author__ = "Cameron Flannery"
@@ -10,31 +9,27 @@ __version__ = "1.0"
 __maintainer__ = "Cameron Flannery"
 __email__ = "cmflannery@ucsd.edu"
 __status__ = "Development"
-w3
-
-# Athroat (nozzle throat area)
-#   expects pchamber in atm
-def get_Athroat(var, option):
-    if option == 0:
-        wdot = float(var[0])
-        Isp = float(var[1])
-        pchamber = float(var[2])
-        Cf = float(var[3])
-        return wdot*Isp/(pchamber*Cf)
-    return -1  # error, invalid option
 
 
-def get_Aexit(var, option):
-    if option == 0:
-        epsilon = float(var[0])
-        Athroat = float(var[1])
-        return epsilon*Athroat
-    return -1  # error, invalid option
+class nozzle:
+    def __init__(self, performance, parameters):
+        self.performance = performance
+        self.parameters = parameters
+        self.gen_nozzle_dims()
 
+    def gen_nozzle_dims(self):
+        self.Athroat = self.get_Athroat()
+        self.Aexit = self.get_Aexit()
+        # self.Vchamber = self.get_Vchamber()
 
-def get_Vchamber(var, option):
-    if option == 0:
-        L_star = float(var[0])
-        Achamber = float(var[1])
-        return L_star*Achamber
-    return -1  # error, invalid option
+    # Athroat (nozzle throat area)
+    #   expects pchamber in atm
+    def get_Athroat(self):
+        return (self.performance.wdot*self.parameters.Isp) / \
+                (self.parameters.pchamber*self.performance.Cf)
+
+    def get_Aexit(self):
+        return self.performance.epsilon * self.Athroat
+
+    def get_Vchamber(self):
+        return self.performance.L_star * self.Achamber

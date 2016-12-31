@@ -3,34 +3,35 @@
   "Data_Source1" : "http://www.braeunig.us/space/comb.htm",
   "Assumptions" :{
     "Chamber Pressure" : "68 atm",
-    "Units" : "Metric"
+    "Units" : "Metric",
+    "MW_Units" : "kg/mol"
   },
   "Propellants_Dict": [
     {
       "Oxidizer" : "O2",
       "Fuel" : "RP1",
       "MR" : 2.29,
-      "Isp" : 289,
-      "MW" : 207,
-      "Tc" : 3540,
+      "Isp" : 289.00,
+      "MW" : 0.207,
+      "Tc" : 3540.00,
       "gamma" : 1.219
     },
     {
       "Oxidizer" : "O2",
       "Fuel" : "CH4",
       "MR" : 2.77,
-      "Isp" : 299,
-      "MW" : 48.04,
-      "Tc" : 3375,
+      "Isp" : 299.00,
+      "MW" : 0.04804,
+      "Tc" : 3375.00,
       "gamma" : 1.209
     },
     {
       "Oxidizer" : "O2",
       "Fuel" : "H2",
       "MR" : 5.75,
-      "Isp" : 381,
-      "MW" : 34.016,
-      "Tc" : 3450,
+      "Isp" : 381.00,
+      "MW" : 0.034016,
+      "Tc" : 3450.00,
       "gamma" : 1.201
     }
   ]

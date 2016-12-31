@@ -1,25 +1,28 @@
-    #!/usr/bin/env python
+#!/usr/bin/env python
 import os
 import sys
 import inspect
 # allow imports from subfolder
 cmd_subfolder = os.path.realpath(os.path.abspath(os.path.join(os.path.split
-        (inspect.getfile(inspect.currentframe()))[0], "performance")))
+                                 (inspect.getfile(inspect.currentframe()))[0],
+                                 "performance")))
 if cmd_subfolder not in sys.path:
     sys.path.insert(0, cmd_subfolder)
 cmd_subfolder = os.path.realpath(os.path.abspath(os.path.join(os.path.split
-        (inspect.getfile(inspect.currentframe()))[0], "nozzle")))
+                                 (inspect.getfile(inspect.currentframe()))[0],
+                                 "nozzle")))
 if cmd_subfolder not in sys.path:
     sys.path.insert(0, cmd_subfolder)
 cmd_subfolder = os.path.realpath(os.path.abspath(os.path.join(os.path.split
-        (inspect.getfile(inspect.currentframe()))[0], "common")))
+                                 (inspect.getfile(inspect.currentframe()))[0],
+                                  "common")))
 if cmd_subfolder not in sys.path:
     sys.path.insert(0, cmd_subfolder)
 # imports from 'common' subfolder
 from prompts import *
-from propellant import *
-from equations import *
-from nozzle import *
+from propellant import prop_values
+from equations import performance
+from nozzle import nozzle
 from gen_output import *
 from conversions import *
 # Class definitions used to build engines.
@@ -37,21 +40,37 @@ __status__ = "Development"
 # engine class retrieves and stores all outputs for each run
 class engine:
     def __init__(self):
-        self.pchamber = 75.  # assumption for testing
+        self.pchamber = 75.0  # assumption for testing
 
     def start_building(self):
-        self.pprompts()
-        self.calc_performance(self.thrust, self.propellants, self.units)
-        self.calc_nozzle(self.thrust, self.propellants, self.units)
-        create_xlsx(self)
+        self.parameters = parameters()
+        self.performance = performance(self.parameters)
+        self.nozzle = nozzle(self.performance, self.parameters)  # create nozzle dimension obj
+        # self.outputs = outputs(self)
+        print self.performance.wdot
+        print self.parameters.Isp
+        print self.parameters.pchamber
+        print self.performance.Cf
+        print self.performance.pthroat
+        print self.performance.epsilon
+        print self.nozzle.Athroat
+        print self.nozzle.Aexit
 
-    def pprompts(self):
+
+class parameters:
+    def __init__(self):
+        self.pchamber = 75.0  # constant, assumption
+        self.start_prompts()
+        self.convert()
+        self.start_propellants()
+
+    def start_prompts(self):
         self.units = prompt_for_units()
         if self.units == "test":
-            self.thrust = 500
+            self.thrust = 500.00
             self.propellants = ["O2", "CH4"]
-            self.pambient = 1
-            self.pexit = 1
+            self.pambient = 1.00
+            self.pexit = 1.00
             print "\nSetting test parameters: "
             print "\t Thrust =",
             print self.thrust
@@ -64,29 +83,24 @@ class engine:
             self.propellants = prompt_for_propellants()
             self.alt = prompt_for_altitude()
             if self.alt == "0":
-                self.pambient = 1
-                self.pexit = 1
+                self.pambient = 1.00
+                self.pexit = 1.00
             elif self.alt == "1":
-                self.pambient = 0
-                self.pexit = 1  # very non-ideal assumption.. how can this be improved??
+                self.pambient = 0.00
+                self.pexit = 1.00  # very non-ideal assumption.. how can this be improved??
             self.FoS = prompt_for_FoS()
 
-    def calc_performance(self, thrust, propellants, units):
-        self.Isp = pull_Isp(propellants)
-        self.gamma = pull_gamma(propellants)
-        self.Tc = pull_Tc(propellants)
-        self.wdot = get_wdot([thrust, self.Isp], 0)
-        self.pthroat = get_pthroat([self.pchamber, self.gamma], 0)
-        self.epsilon = get_epsilon([self.gamma, self.pchamber, self.pexit], 0)
-        self.Cf = get_Cf([self.pexit, self.pchamber, self.pambient, self.gamma,
-                          self.epsilon], 0)  # need to get
+    def start_propellants(self):
+        prop_data = prop_values(self.propellants)
+        self.Isp = prop_data.Isp
+        self.MR = prop_data.MR
+        self.Tc = prop_data.Tc
+        self.gamma = prop_data.gamma
 
-    def calc_nozzle(self, thrust, propellants, units):
-        pchamber_converted = convert_pressure(self.pchamber, self.units)
-        self.Athroat = get_Athroat([self.wdot, self.Isp, pchamber_converted,
-                                    self.Cf], 0)
-        self.Aexit = get_Aexit([self.epsilon, self.Athroat], 0)
-
+    def convert(self):
+        self.pchamber = self.pchamber * 14.6959487758  # temporary implicit unit conversion until unit_converte is finished
+        self.pambient = self.pambient * 14.6959487758
+        self.pexit = self.pexit * 14.6959487758
 
 def main():
     try:

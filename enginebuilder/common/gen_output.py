@@ -14,36 +14,47 @@ __email__ = "cmflannery@ucsd.edu"
 __status__ = "Development"
 
 
-def create_xlsx(engine):
-    ts = time.time()
-    st = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d_%H_%M_%S')
-    file_name = "engine_" + st + ".xlsx"
-    workbook = xlsxwriter.Workbook(file_name)
-    worksheet = workbook.add_worksheet()
+class outputs:
+    def __init__(self, engine):
+        self.engine = engine
+        self.output_dir = os.path.join(os.getcwd(), 'output')
+        self.create_xlsx()
 
-    worksheet.write('B2', 'openrocketengine')
-    worksheet.write('B3', 'Thrust')
-    worksheet.write('C3', engine.thrust)
-    worksheet.write('B4', 'Throat Area')
-    worksheet.write('C4', engine.Athroat)
-    worksheet.write('B5', 'Nozzle Exit Area')
-    worksheet.write('C5', engine.Aexit)
+    def create_xlsx(self):
+        ts = time.time()
+        st = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d_%H_%M_%S')
+        file_name = "engine_" + st + ".xlsx"
+        self.workbook = xlsxwriter.Workbook(file_name)
+        self.worksheet = self.workbook.add_worksheet()
 
-    write_units(worksheet, engine.units)
-    workbook.close()
+        self.worksheet.write('B2', 'openrocketengine')
+        self.worksheet.write('B3', 'Thrust')
+        self.worksheet.write('C3', self.engine.parameters.thrust)
+        self.worksheet.write('B4', 'Throat Area')
+        self.worksheet.write('C4', self.engine.nozzle.Athroat)
+        self.worksheet.write('B5', 'Nozzle Exit Area')
+        self.worksheet.write('C5', self.engine.nozzle.Aexit)
 
-    print "\nEngine outputs have been generated in",
-    print file_name
+        self.write_units()
+        self.workbook.close()
 
-    return 0
+        print "\nEngine outputs have been generated in",
+        print file_name
+
+        return 0
 
 
-def write_units(worksheet, units):
-    if units == "0":
-        worksheet.write('D3', 'lbf')
-        worksheet.write('D4', 'in^2')
-        worksheet.write('D5', 'in^2')
-    elif units == "1":
-        worksheet.write('D3', 'N')
-        worksheet.write('D4', 'm^2')
-        worksheet.write('D5', 'm^2')
+    def write_units(self):
+        if self.engine.parameters.units == "0":
+            self.worksheet.write('D3', 'lbf')
+            self.worksheet.write('D4', 'in^2')
+            self.worksheet.write('D5', 'in^2')
+        elif self.engine.parameters.units == "1":
+            self.worksheet.write('D3', 'N')
+            self.worksheet.write('D4', 'm^2')
+            self.worksheet.write('D5', 'm^2')
+
+
+    def create_output_dir(self):
+        if not os.path.exists(self.output_dir):
+            os.makedirs(self.output_dir)
