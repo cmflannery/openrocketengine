@@ -29,6 +29,7 @@ class prop_values:
         self.Tc = self.pull_Tc()
         self.gamma = self.pull_gamma()
         self.L_star = self.pull_L_star()
+        self.MW = self.pull_MW()
 
     # pull_Isp(propellants[], propellant_data[])
     #   propellants[0] : Oxidizer
@@ -37,7 +38,7 @@ class prop_values:
         for prop in propellant_data["Propellants_Dict"]:
             if (prop["Oxidizer"] == self.propellants[0]) and \
                     (prop["Fuel"] == self.propellants[1]):
-                return prop["Isp"]
+                return prop["Isp"]  # in s
         return 0
 
     # pull_MR(propellants[], propellant_data[])
@@ -47,7 +48,7 @@ class prop_values:
         for prop in propellant_data["Propellants_Dict"]:
             if (prop["Oxidizer"] == self.propellants[0]) and \
                     (prop["Fuel"] == self.propellants[1]):
-                return prop["MR"]
+                return prop["MR"]  # unitless
         return 0
 
     # pull_Isp(propellants[], propellant_data[])
@@ -57,7 +58,7 @@ class prop_values:
         for prop in propellant_data["Propellants_Dict"]:
             if (prop["Oxidizer"] == self.propellants[0]) and \
                     (prop["Fuel"] == self.propellants[1]):
-                return prop["Tc"]
+                return prop["Tc"]  # in K
         return 0
 
     # pull_MR(propellants[], propellant_data[])
@@ -67,19 +68,19 @@ class prop_values:
         for prop in propellant_data["Propellants_Dict"]:
             if (prop["Oxidizer"] == self.propellants[0]) and \
                     (prop["Fuel"] == self.propellants[1]):
-                return prop["gamma"]
+                return prop["gamma"]  # unitless
         return 0
 
     def pull_MW(self):
         for prop in propellant_data["Propellants_Dict"]:
             if (prop["Oxidizer"] == self.propellants[0]) and \
                     (prop["Fuel"] == self.propellants[1]):
-                return prop["MW"]
+                return prop["MW"]  # in g/mol
         return 0
 
     def pull_L_star(self):
         for prop in propellant_data["Propellants_Dict"]:
             if (prop["Oxidizer"] == self.propellants[0]) and \
                     (prop["Fuel"] == self.propellants[1]):
-                return prop["L_star"]
+                return prop["L_star"]  # in cm
         return 0

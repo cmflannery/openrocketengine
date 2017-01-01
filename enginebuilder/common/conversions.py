@@ -12,11 +12,12 @@ __status__ = "Development"
 
 
 class unit_converter:
-    def __init__(parameters, units):
+    def __init__(self, parameters):
         self.params = parameters
-        self.units = units
+        # start conversions
         self.start_pressure_conversions()
-        return 0
+        self.convert_MW()
+        self.convert_L_star()
 
     def start_pressure_conversions(self):
         self.params.pchamber = self.convert_pressure(self.params.pchamber)
@@ -28,17 +29,30 @@ class unit_converter:
     # output - declares output form
     #   output == 0
     def convert_pressure(self, val):
-        if self.units == "0":
+        if self.params.units == "0":
             return float(val) * 14.6959487758  # atm -> psi
-        elif self.units == "1":
+        elif self.params.units == "1":
             return float(val) * 101325.00  # atm -> N/m^2
-        # code here
-        return 0
+        else:
+            return -1
 
-    def convert_MW(val, inputt, output):
-        if (inputt == 0) and (output == 0):
-            val = val / 453.59237
-        return val
+    def convert_MW(self):
+        if self.params.units == "0":
+            self.params.MW = self.params.MW * 0.002204622
+            return 0
+        elif self.params.units == "1":
+            self.params.MW = self.params.MW
+            return 0
+        else:
+            return -1
 
     def convert_L_star(self):
-        return 0
+        print "converting L_star"
+        if self.params.units == "0":
+            self.params.L_star = self.params.L_star / 2.54
+            return 0
+        elif self.params.units == "1":
+            self.params.L_star = self.params.L_star
+            return 0
+        else:
+            return -1

@@ -54,8 +54,11 @@ class engine:
         print self.parameters.Isp
         print self.parameters.pchamber
         print self.performance.Cf
+        print "L_star: ",
+        print self.parameters.L_star
         print self.performance.pthroat
         print self.performance.epsilon
+        print "Athroat: ",
         print self.nozzle.Athroat
         print self.nozzle.Aexit
         print self.nozzle.Vchamber
@@ -103,13 +106,11 @@ class parameters:
         self.Tc = prop_data.Tc
         self.gamma = prop_data.gamma
         self.L_star = prop_data.L_star
+        self.MW = prop_data.MW
 
     def convert(self):
-        # temporary implicit unit conversions until unit_converte is finished
-        self.pchamber = self.pchamber * 14.6959487758
-        self.pambient = self.pambient * 14.6959487758
-        self.pexit = self.pexit * 14.6959487758
-        self.L_star = self.L_star / 2.54  # temporary implicit conversion
+        # create convert object
+        convert_obj = unit_converter(self)
 
 
 def main():
