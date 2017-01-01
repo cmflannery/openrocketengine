@@ -2,7 +2,7 @@
 import numpy as np
 # conversions.py performs unit conversions
 __author__ = "Cameron Flannery"
-__copyright__ = "Copyright 2016"
+__copyright__ = "Copyright 2017"
 __credits__ = ["Cameron Flannery"]
 __license__ = "MIT"
 __version__ = "1.0"
@@ -24,11 +24,8 @@ class unit_converter:
         self.params.pexit = self.convert_pressure(self.params.pexit)
         self.params.pambient = self.convert_pressure(self.params.pambient)
 
-    # convert_pressure (expects atm input)
-    # val - values to be converted
-    # output - declares output form
-    #   output == 0
     def convert_pressure(self, val):
+        # converts pressure from atm to psi or N/m^2
         if self.params.units == "0":
             return float(val) * 14.6959487758  # atm -> psi
         elif self.params.units == "1":
@@ -47,7 +44,6 @@ class unit_converter:
             return -1
 
     def convert_L_star(self):
-        print "converting L_star"
         if self.params.units == "0":
             self.params.L_star = self.params.L_star / 2.54
             return 0

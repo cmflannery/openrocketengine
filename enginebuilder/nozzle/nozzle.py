@@ -2,7 +2,7 @@
 # nozzle.py calculated the dimensions of the nozzle based on user input and
 # calculated performance parameters
 __author__ = "Cameron Flannery"
-__copyright__ = "Copyright 2016"
+__copyright__ = "Copyright 2017"
 __credits__ = ["Cameron Flannery"]
 __license__ = "MIT"
 __version__ = "1.0"

@@ -31,7 +31,7 @@ from conversions import *
 # Class definitions used to build engines.
 # Manages engine development scripts
 __author__ = "Cameron Flannery"
-__copyright__ = "Copyright 2016"
+__copyright__ = "Copyright 2017"
 __credits__ = ["Cameron Flannery"]
 __license__ = "MIT"
 __version__ = "1.0"
@@ -39,9 +39,15 @@ __maintainer__ = "Cameron Flannery"
 __email__ = "cmflannery@ucsd.edu"
 __status__ = "Development"
 
+# debugging option
+debug = False
+
 
 # engine class retrieves and stores all outputs for each run
 class engine:
+    # engine class is primary class that openrocketengine uses to create a
+    # liquid rocket engine
+    # inputs and outputs are stored here.
     def __init__(self):
         self.pchamber = 75.0  # assumption for testing
 
@@ -52,22 +58,29 @@ class engine:
         self.performance = performance(self.parameters)
         # create nozzle dimension obj
         self.nozzle = nozzle(self.performance, self.parameters)
-        # self.outputs = outputs(self)
-        print self.performance.wdot
-        print self.parameters.Isp
-        print self.parameters.pchamber
-        print self.performance.Cf
-        print "L_star: ",
-        print self.parameters.L_star
-        print self.performance.pthroat
-        print self.performance.epsilon
-        print "Athroat: ",
-        print self.nozzle.Athroat
-        print self.nozzle.Aexit
-        print self.nozzle.Vchamber
+        # create outputs obj
+        self.outputs = outputs(self)
+
+        # debugging prints
+        if debug:
+            print self.performance.wdot
+            print self.parameters.Isp
+            print self.parameters.pchamber
+            print self.performance.Cf
+            print "L_star: ",
+            print self.parameters.L_star
+            print self.performance.pthroat
+            print self.performance.epsilon
+            print "Athroat: ",
+            print self.nozzle.Athroat
+            print self.nozzle.Aexit
+            print self.nozzle.Vchamber
 
 
 class parameters:
+    # parameters class holds values from propellant.json
+    # starts prompts to get input parameters from user
+    #   prompts from /performance/prompts.py
     def __init__(self):
         self.pchamber = 75.00  # constant, assumption
         self.start_prompts()
@@ -77,6 +90,20 @@ class parameters:
     def start_prompts(self):
         self.units = prompt_for_units()
         if self.units == "test":
+            self.test_case()
+        else:
+            self.thrust = prompt_for_thrust(self.units)
+            self.propellants = prompt_for_propellants()
+            self.alt = prompt_for_altitude()
+            if self.alt == "0":
+                self.pambient = 1.00
+                self.pexit = 1.00
+            elif self.alt == "1":
+                self.pambient = 0.00
+                self.pexit = 0.10
+            self.FoS = prompt_for_FoS()
+
+    def test_case(self):
             self.thrust = 500.00
             self.propellants = ["O2", "CH4"]
             self.pambient = 1.00
@@ -88,18 +115,7 @@ class parameters:
             print self.propellants
             print "\n"
             self.units = "0"
-        else:
-            self.thrust = prompt_for_thrust(self.units)
-            self.propellants = prompt_for_propellants()
-            self.alt = prompt_for_altitude()
-            if self.alt == "0":
-                self.pambient = 1.00
-                self.pexit = 1.00
-            elif self.alt == "1":
-                self.pambient = 0.00
-                # needs to be improved
-                self.pexit = 1.00  # very non-ideal assumption..
-            self.FoS = prompt_for_FoS()
+            self.alt = "0"
 
     def start_propellants(self):
         # create prop_values obj
@@ -117,12 +133,14 @@ class parameters:
 
 
 def print_logo_image():
+    # prints ascii art of rocket stored in /resources/openrocketengine
     fname = os.path.join(os.getcwd(), 'resources', 'openrocketengine.txt')
     with open(fname, 'r') as fin:
         print fin.read()
 
 
 def print_logo_text():
+    # display ascii art text
     ShowText = 'OpenRocketEng'
 
     font = ImageFont.truetype('arialbd.ttf', 10)  # load the font
