@@ -11,7 +11,7 @@ __email__ = "cmflannery@ucsd.edu"
 __status__ = "Development"
 
 
-class performance:
+class performance(object):
     def __init__(self, parameters):
         self.params = parameters
         self.get_performance()

@@ -11,7 +11,7 @@ __email__ = "cmflannery@ucsd.edu"
 __status__ = "Development"
 
 
-class unit_converter:
+class unit_converter(object):
     def __init__(self, parameters):
         self.params = parameters
         # start conversions

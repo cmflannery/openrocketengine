@@ -44,7 +44,7 @@ debug = False
 
 
 # engine class retrieves and stores all outputs for each run
-class engine:
+class engine(object):
     # engine class is primary class that openrocketengine uses to create a
     # liquid rocket engine
     # inputs and outputs are stored here.
@@ -77,7 +77,7 @@ class engine:
             print self.nozzle.Vchamber
 
 
-class parameters:
+class parameters(object):
     # parameters class holds values from propellant.json
     # starts prompts to get input parameters from user
     #   prompts from /performance/prompts.py

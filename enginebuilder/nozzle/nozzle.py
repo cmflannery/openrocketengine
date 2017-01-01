@@ -11,7 +11,7 @@ __email__ = "cmflannery@ucsd.edu"
 __status__ = "Development"
 
 
-class nozzle:
+class nozzle(object):
     def __init__(self, performance, parameters):
         self.performance = performance
         self.parameters = parameters
@@ -37,3 +37,10 @@ class nozzle:
 
     def get_Achamber(self):
         return -1
+
+
+class _80deg_bell(object):
+    """Define dimensions and parameters for an 80deg bell nozzle."""
+    def __init__(self):
+        # code here
+        pass

@@ -14,7 +14,7 @@ __email__ = "cmflannery@ucsd.edu"
 __status__ = "Development"
 
 
-class outputs:
+class outputs(object):
     def __init__(self, engine):
         self.engine = engine
         self.output_dir = os.path.join(os.getcwd(), 'output')
