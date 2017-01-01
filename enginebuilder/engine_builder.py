@@ -2,6 +2,9 @@
 import os
 import sys
 import inspect
+from PIL import ImageFont
+from PIL import ImageDraw
+from PIL import Image
 # allow imports from subfolder
 cmd_subfolder = os.path.realpath(os.path.abspath(os.path.join(os.path.split
                                  (inspect.getfile(inspect.currentframe()))[0],
@@ -113,12 +116,42 @@ class parameters:
         convert_obj = unit_converter(self)
 
 
+def print_logo_image():
+    fname = os.path.join(os.getcwd(), 'resources', 'openrocketengine.txt')
+    with open(fname, 'r') as fin:
+        print fin.read()
+
+
+def print_logo_text():
+    ShowText = 'OpenRocketEng'
+
+    font = ImageFont.truetype('arialbd.ttf', 10)  # load the font
+    size = font.getsize(ShowText)  # calc the size of text in pixels
+    image = Image.new('1', size, 1)  # create a b/w image
+    draw = ImageDraw.Draw(image)
+    draw.text((0, 0), ShowText, font=font)  # render the text to the bitmap
+    for rownum in range(size[1]):
+        # scan the bitmap:
+        # print ' ' for black pixel and
+        # print '#' for white one
+        line = []
+        for colnum in range(size[0]):
+            if image.getpixel((colnum, rownum)):
+                line.append(' '),
+            else:
+                line.append('#'),
+        print ''.join(line)
+
+
 def main():
     try:
         os.system('cls')
     except OSError:
         os.system('clear')
-    print "Lets build a rocket engine!\n"
+    print_logo_image()
+    print_logo_text()
+    print "\n\nLets build a rocket engine!\n"
+
     eng = engine()
     eng.start_building()
 
