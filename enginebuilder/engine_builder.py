@@ -2,9 +2,6 @@
 import os
 import sys
 import inspect
-from PIL import ImageFont
-from PIL import ImageDraw
-from PIL import Image
 # allow imports from subfolder
 cmd_subfolder = os.path.realpath(os.path.abspath(os.path.join(os.path.split
                                  (inspect.getfile(inspect.currentframe()))[0],
@@ -28,6 +25,7 @@ from equations import *
 from nozzle import *
 from gen_output import *
 from conversions import *
+from ascii_art import *
 # Class definitions used to build engines.
 # Manages engine development scripts
 __author__ = "Cameron Flannery"
@@ -113,30 +111,17 @@ class parameters(object):
 def print_logo_image():
     # prints ascii art of rocket stored in /resources/openrocketengine
     fname = os.path.join(os.getcwd(), 'resources', 'openrocketengine.txt')
-    with open(fname, 'r') as fin:
-        print fin.read()
+
+    logo_image = ascii_image(fname)
+    logo_image.display_image()
 
 
 def print_logo_text():
     # display ascii art text
     ShowText = 'OpenRocketEng'
 
-    font = ImageFont.truetype('arialbd.ttf', 10)  # load the font
-    size = font.getsize(ShowText)  # calc the size of text in pixels
-    image = Image.new('1', size, 1)  # create a b/w image
-    draw = ImageDraw.Draw(image)
-    draw.text((0, 0), ShowText, font=font)  # render the text to the bitmap
-    for rownum in range(size[1]):
-        # scan the bitmap:
-        # print ' ' for black pixel and
-        # print '#' for white one
-        line = []
-        for colnum in range(size[0]):
-            if image.getpixel((colnum, rownum)):
-                line.append(' '),
-            else:
-                line.append('#'),
-        print ''.join(line)
+    logo_text = ascii_text(ShowText)
+    logo_text.display_text()
 
 
 def main():
@@ -152,6 +137,9 @@ def main():
     eng.start_building()
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except KeyboardInterrupt:
+        print "\n\nKeyboardInterrupt: Exiting...\n"
 else:
     print "\"engine_builder.py\" must be run as the main script"
