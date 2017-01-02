@@ -23,9 +23,9 @@ if cmd_subfolder not in sys.path:
     sys.path.insert(0, cmd_subfolder)
 # imports from 'common' subfolder
 from prompts import *
-from propellant import prop_values
-from equations import performance
-from nozzle import nozzle
+from propellant import *
+from equations import *
+from nozzle import *
 from gen_output import *
 from conversions import *
 # Class definitions used to build engines.
@@ -78,46 +78,24 @@ class engine(object):
 
 
 class parameters(object):
-    # parameters class holds values from propellant.json
-    # starts prompts to get input parameters from user
-    #   prompts from /performance/prompts.py
+    """ parameters class holds values from propellant.json starts prompts to
+ get input parameters from user prompts from /performance/prompts.py"""
     def __init__(self):
         self.pchamber = 75.00  # constant, assumption
-        self.start_prompts()
-        self.start_propellants()
+        self.get_prompts()
+        self.get_prop_data()
         self.convert()
 
-    def start_prompts(self):
-        self.units = prompt_for_units()
-        if self.units == "test":
-            self.test_case()
-        else:
-            self.thrust = prompt_for_thrust(self.units)
-            self.propellants = prompt_for_propellants()
-            self.alt = prompt_for_altitude()
-            if self.alt == "0":
-                self.pambient = 1.00
-                self.pexit = 1.00
-            elif self.alt == "1":
-                self.pambient = 0.00
-                self.pexit = 0.10
-            self.FoS = prompt_for_FoS()
+    def get_prompts(self):
+        prompt_responses = user_prompts()
+        self.units = prompt_responses.units
+        self.thrust = prompt_responses.thrust
+        self.alt = prompt_responses.alt
+        self.propellants = prompt_responses.propellants
+        self.pambient = prompt_responses.pambient
+        self.pexit = prompt_responses.pexit
 
-    def test_case(self):
-            self.thrust = 500.00
-            self.propellants = ["O2", "CH4"]
-            self.pambient = 1.00
-            self.pexit = 1.00
-            print "\nSetting test parameters: "
-            print "\t Thrust =",
-            print self.thrust
-            print "\t Propellants:",
-            print self.propellants
-            print "\n"
-            self.units = "0"
-            self.alt = "0"
-
-    def start_propellants(self):
+    def get_prop_data(self):
         # create prop_values obj
         prop_data = prop_values(self.propellants)
         self.Isp = prop_data.Isp
