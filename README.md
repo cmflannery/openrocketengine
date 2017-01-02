@@ -7,7 +7,7 @@ The equations used in this program were taken from [_Design of Liquid Propellant
 To run openrocketengine, execute [engine_builder.py](https://github.com/cmflannery/openrocketengine/engine_builder.py) with a python 2.7 interpreter.
 
 ## Release Notes
-__Beta Release__
+__Alpha Release__
 
 Currently, the program does not compute propellant curves. Consequently, chamber pressure can not be optimized, and a value of 75 atm is chosen. This is a dangerous assumption. Until [curves.py](https://github.com/cmflannery/openrocketengine/enginebuilder/performance/curves.py) is complete, the results obtained with openrocketengine should not be consulted in the design of any liquid rocket engine.
 
@@ -27,6 +27,9 @@ Vacuum engine design is not yet fully supported.
 Currently, openrocketengine creates an excel file with design parameters that can be used to design an engine. Future support for generating '.IGES' files would be great.
 
 Looking at using/improving [this](https://pypi.python.org/pypi/pyIGES/0.0.27) library to generate .IGES files.
+
+### Design Iteration and Testing
+openrocketengine should have the ability to take test data inputs and use that information to improve the engine model.
 
 ## Licensing
 openrocketengine is released under the MIT license.
