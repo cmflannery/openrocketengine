@@ -11,6 +11,7 @@ __email__ = "cmflannery@ucsd.edu"
 __status__ = "Development"
 
 
-# optimize the value of L star
-def opt_L_star():
-    return -1
+class opt_contraction_ratio(object):
+    """opt_contraction_ratio optimizes the contraction area ratio."""
+    def __init__(self):
+        super(opt_contraction_ratio, self).__init__()

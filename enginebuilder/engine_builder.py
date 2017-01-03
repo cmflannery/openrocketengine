@@ -140,6 +140,6 @@ if __name__ == "__main__":
     try:
         main()
     except KeyboardInterrupt:
-        print "\n\nKeyboardInterrupt: Exiting...\n"
+        print "\n\nKeyboardInterrupt: exiting...\n"
 else:
     print "\"engine_builder.py\" must be run as the main script"

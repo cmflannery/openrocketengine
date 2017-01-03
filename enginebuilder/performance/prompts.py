@@ -153,7 +153,7 @@ class user_prompts(object):
             print "\nChoose a nozzle contour:"
             print "\t1. Conical"
             print "\t2. 80% bell"
-            print "Enter your choice: "
+            print "Enter your choice: ",
             nozzle_contour = raw_input()
             print "Nozzle Contour =",
             print nozzle_contour

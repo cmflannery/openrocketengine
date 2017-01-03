@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+import numpy as np
 # nozzle.py calculated the dimensions of the nozzle based on user input and
 # calculated performance parameters
 __author__ = "Cameron Flannery"
@@ -19,6 +20,7 @@ class nozzle(object):
 
     def gen_nozzle_dims(self):
         self.Athroat = self.get_Athroat()
+        self.Dthroat = self.get_Dthroat()
         self.Aexit = self.get_Aexit()
         self.Vchamber = self.get_Vchamber()
         self.Aachamber = self.get_Achamber()
@@ -28,6 +30,12 @@ class nozzle(object):
     def get_Athroat(self):
         return (self.performance.wdot*self.parameters.Isp) / \
                 (self.parameters.pchamber*self.performance.Cf)
+
+    def get_Dthroat(self):
+        return np.sqrt(self.Athroat * 4.0 / np.pi)
+
+    def get_Ln(self):
+        return -1
 
     def get_Aexit(self):
         return self.performance.epsilon * self.Athroat
