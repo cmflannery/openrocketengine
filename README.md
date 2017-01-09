@@ -31,5 +31,9 @@ Looking at using/improving [this](https://pypi.python.org/pypi/pyIGES/0.0.27) li
 ### Design Iteration and Testing
 openrocketengine should have the ability to take test data inputs and use that information to improve the engine model.
 
+## References
+[GATech: Bell Nozzles](http://soliton.ae.gatech.edu/people/jseitzma/classes/ae6450/bell_nozzle.pdf)
+[_Design of Liquid Propellant Rocket Engines_](https://ntrs.nasa.gov/archive/nasa/casi.ntrs.nasa.gov/19710019929.pdf)
+
 ## Licensing
 openrocketengine is released under the MIT license.
