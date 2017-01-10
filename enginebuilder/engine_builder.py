@@ -111,7 +111,7 @@ def print_logo_text():
 
 def main():
     try:
-        subprocess.call('cls')
+        subprocess.call('cls', shell=True)
     except OSError:
         subprocess.call('clear')
     print_logo_image()
