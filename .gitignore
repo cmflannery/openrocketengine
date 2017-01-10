@@ -1,2 +1,3 @@
 *.pyc
 enginebuilder/output/
+.DS_Store

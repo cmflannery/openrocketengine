@@ -51,10 +51,14 @@ class outputs(object):
 
     def write_units(self):
         if self.engine.parameters.units == "0":
-            self.worksheet.write('D3', 'lbf')
-            self.worksheet.write('D4', 'in^2')
-            self.worksheet.write('D5', 'in^2')
+            units_force = 'lbf'
+            units_area = 'in^2'
+            units_volume = 'in^3'
         elif self.engine.parameters.units == "1":
-            self.worksheet.write('D3', 'N')
-            self.worksheet.write('D4', 'm^2')
-            self.worksheet.write('D5', 'm^2')
+            units_force = 'N'
+            units_area = 'm^2'
+            units_volume = 'm^2'
+        self.worksheet.write('D3', units_force)
+        self.worksheet.write('D4', units_area)
+        self.worksheet.write('D5', units_area)
+        self.worksheet.write('D6', units_volume)
