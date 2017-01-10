@@ -2,6 +2,7 @@
 import os
 import sys
 import inspect
+import subprocess
 # imports from enginebuilder module
 from performance.prompts import *
 from performance.propellant import *
@@ -110,9 +111,9 @@ def print_logo_text():
 
 def main():
     try:
-        os.system('cls')
+        subprocess.call('cls')
     except OSError:
-        os.system('clear')
+        subprocess.call('clear')
     print_logo_image()
     print_logo_text()
     print "\n\nLets build a rocket engine!\n"

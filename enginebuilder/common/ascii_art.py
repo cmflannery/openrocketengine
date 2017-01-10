@@ -20,7 +20,7 @@ class ascii_text(object):
         self.ShowText = text
 
     def display_text(self):
-        font = ImageFont.truetype('arialbd.ttf', 10)  # load the font
+        font = ImageFont.truetype('Arial.ttf', 10)  # load the font
         size = font.getsize(self.ShowText)  # calc the size of text in pixels
         image = Image.new('1', size, 1)  # create a b/w image
         draw = ImageDraw.Draw(image)
