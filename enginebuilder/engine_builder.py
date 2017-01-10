@@ -22,9 +22,6 @@ __maintainer__ = "Cameron Flannery"
 __email__ = "cmflannery@ucsd.edu"
 __status__ = "Development"
 
-# debugging option
-debug = False
-
 
 # engine class retrieves and stores all outputs for each run
 class engine(object):
@@ -43,21 +40,6 @@ class engine(object):
         self.nozzle = nozzle(self.performance, self.parameters)
         # create outputs obj
         self.outputs = outputs(self)
-
-        # debugging prints
-        if debug:
-            print self.performance.wdot
-            print self.parameters.Isp
-            print self.parameters.pchamber
-            print self.performance.Cf
-            print "L_star: ",
-            print self.parameters.L_star
-            print self.performance.pthroat
-            print self.performance.epsilon
-            print "Athroat: ",
-            print self.nozzle.Athroat
-            print self.nozzle.Aexit
-            print self.nozzle.Vchamber
 
 
 class parameters(object):
