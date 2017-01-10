@@ -2,30 +2,14 @@
 import os
 import sys
 import inspect
-# allow imports from subfolder
-cmd_subfolder = os.path.realpath(os.path.abspath(os.path.join(os.path.split
-                                 (inspect.getfile(inspect.currentframe()))[0],
-                                 "performance")))
-if cmd_subfolder not in sys.path:
-    sys.path.insert(0, cmd_subfolder)
-cmd_subfolder = os.path.realpath(os.path.abspath(os.path.join(os.path.split
-                                 (inspect.getfile(inspect.currentframe()))[0],
-                                 "nozzle")))
-if cmd_subfolder not in sys.path:
-    sys.path.insert(0, cmd_subfolder)
-cmd_subfolder = os.path.realpath(os.path.abspath(os.path.join(os.path.split
-                                 (inspect.getfile(inspect.currentframe()))[0],
-                                  "common")))
-if cmd_subfolder not in sys.path:
-    sys.path.insert(0, cmd_subfolder)
-# imports from 'common' subfolder
-from prompts import *
-from propellant import *
-from equations import *
-from nozzle import *
-from gen_output import *
-from conversions import *
-from ascii_art import *
+# imports from enginebuilder module
+from performance.prompts import *
+from performance.propellant import *
+from performance.equations import *
+from nozzle.nozzle import *
+from common.gen_output import *
+from common.conversions import *
+from common.ascii_art import *
 # Class definitions used to build engines.
 # Manages engine development scripts
 __author__ = "Cameron Flannery"
