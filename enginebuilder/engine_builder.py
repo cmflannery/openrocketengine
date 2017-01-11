@@ -93,9 +93,9 @@ def print_logo_text():
 
 def main():
     try:
-        subprocess.call('cls', shell=True)
-    except OSError:
         subprocess.call('clear')
+    except OSError:
+        subprocess.call('cls', shell=True)
     print_logo_image()
     print_logo_text()
     print "\n\nLets build a rocket engine!\n"
