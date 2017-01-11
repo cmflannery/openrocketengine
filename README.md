@@ -23,6 +23,13 @@ openrocketengine undergoes verification and validation testing in accordance to 
 Currently, the program supports liquid engine design with propellant combinations seen in [propellant.json](https://github.com/cmflannery/openrocketengine/enginebuilder/propellant.json).
 Vacuum engine design is not yet fully supported. Namely, there is currently no method used to optimize the exit area of the nozzle. This will likely require more user input as it will be the optimization of nozzle weight, material selection, and expansion area ratio.
 
+##### Current Challenges
+What parameters need to be optimized, and what is an optimized engine design?
+__Parameters to Optimize__
+* thrust/weight ratio
+* material cost
+* manufacturing difficulty (this will be hard)
+
 ##### 3D Modeling
 Currently, openrocketengine creates an excel file with some design parameters that can be used to design an engine. Future support for generating '.IGES' files would be great.
 
