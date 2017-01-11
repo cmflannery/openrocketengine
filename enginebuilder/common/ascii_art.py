@@ -20,11 +20,15 @@ class ascii_text(object):
         self.ShowText = text
 
     def display_text(self):
-        font = ImageFont.truetype('Arial.ttf', 10)  # load the font
+        fontsize = 10
+        try:
+            font = ImageFont.truetype('Arial.ttf', fontsize)  # load the font
+        except IOError:
+            font = ImageFont.truetype('arialbd.ttf', fontsize)
         size = font.getsize(self.ShowText)  # calc the size of text in pixels
         image = Image.new('1', size, 1)  # create a b/w image
         draw = ImageDraw.Draw(image)
-        draw.text((0, 0), self.ShowText, font=font)  # render the text to the bitmap
+        draw.text((0, 0), self.ShowText, font=font)  # render text to bitmap
         for rownum in range(size[1]):
             # scan the bitmap:
             # print ' ' for black pixel and
