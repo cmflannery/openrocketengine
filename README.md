@@ -25,6 +25,7 @@ Vacuum engine design is not yet fully supported. Namely, there is currently no m
 
 ##### Current Challenges
 What parameters need to be optimized, and what is an optimized engine design?
+</br>
 __Parameters to Optimize__
 * thrust/weight ratio
 * material cost
