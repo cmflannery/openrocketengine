@@ -1,8 +1,0 @@
-Python 2.7
-
-python modules:
-os
-json
-numpy
-inspect
-sys
