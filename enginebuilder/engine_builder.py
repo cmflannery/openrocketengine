@@ -3,6 +3,7 @@ import os
 import sys
 import inspect
 import subprocess
+import pytest
 # imports from enginebuilder module
 from performance.prompts import *
 from performance.propellant import *
@@ -70,6 +71,9 @@ class parameters(object):
         self.L_star = prop_data.L_star
         self.MW = prop_data.MW
 
+    def test_prop_data(self):
+        assert self.Isp == -1
+
     def convert(self):
         # create convert object
         convert_obj = unit_converter(self)
@@ -93,9 +97,9 @@ def print_logo_text():
 
 def main():
     try:
-        subprocess.call('clear')
-    except OSError:
         subprocess.call('cls', shell=True)
+    except OSError:
+        subprocess.call('clear')
     print_logo_image()
     print_logo_text()
     print "\n\nLets build a rocket engine!\n"

@@ -21,6 +21,9 @@ Community support is welcome. Pull requests are encouraged for meaningful change
 openrocketengine undergoes verification and validation testing in accordance to IEEE 1012-2012.
 
 ## Functionality
+#### Wiki
+A comprehensive overview of openrocketengine is available in the [wiki](https://github.com/cmflannery/openrocketengine/wiki).
+
 Currently, the program supports liquid engine design with propellant combinations seen in [propellant.json](https://github.com/cmflannery/openrocketengine/enginebuilder/propellant.json).
 Vacuum engine design is not yet fully supported. Namely, there is currently no method used to optimize the exit area of the nozzle. This will likely require more user input as it will be the optimization of nozzle weight, material selection, and expansion area ratio.
 

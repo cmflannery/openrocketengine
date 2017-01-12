@@ -11,6 +11,8 @@
     {
       "Oxidizer" : "O2",
       "Fuel" : "RP1",
+      "file_name" : "O2_RP1.csv",
+      "L_star" : 110.00,
       "MR" : 2.29,
       "Isp" : 289.00,
       "MW" : 0.207,
