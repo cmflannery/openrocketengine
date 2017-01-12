@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-import propellant as prop
 # Equations used to define engine parameters and performance
 __author__ = "Cameron Flannery"
 __copyright__ = "Copyright 2017"

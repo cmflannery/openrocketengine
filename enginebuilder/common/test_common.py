@@ -1,7 +1,10 @@
 #!/usr/bin/env python
 import pytest
 # import modules
-import engine_builder
+import prompts
+import gen_output
+import conversions
+import ascii_art
 
 
 def test_stuff():

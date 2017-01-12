@@ -12,7 +12,8 @@ __maintainer__ = "Cameron Flannery"
 __email__ = "cmflannery@ucsd.edu"
 __status__ = "Development"
 
-prop_file = os.path.join(os.getcwd(), 'performance', 'propellant_resources',
+path = os.path.dirname(__file__)
+prop_file = os.path.join(path, 'propellant_resources',
                          'propellant.json')
 with open(prop_file) as propellant_raw:
     propellant_data = json.load(propellant_raw)

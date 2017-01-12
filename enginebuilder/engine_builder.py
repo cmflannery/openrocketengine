@@ -4,10 +4,10 @@ import sys
 import inspect
 import subprocess
 # imports from enginebuilder module
-from performance.prompts import *
 from performance.propellant import *
 from performance.equations import *
 from nozzle.nozzle import *
+from common.prompts import *
 from common.gen_output import *
 from common.conversions import *
 from common.ascii_art import *
@@ -77,7 +77,8 @@ class parameters(object):
 
 def print_logo_image():
     # prints ascii art of rocket stored in /resources/openrocketengine
-    fname = os.path.join(os.getcwd(), 'resources', 'openrocketengine.txt')
+    path = os.path.dirname(__file__)
+    fname = os.path.join(path, 'resources', 'openrocketengine.txt')
 
     logo_image = ascii_image(fname)
     logo_image.display_image()

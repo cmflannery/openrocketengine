@@ -1,3 +1,5 @@
 *.pyc
 enginebuilder/output/
 .DS_Store
+*__pycache__/
+.cache/

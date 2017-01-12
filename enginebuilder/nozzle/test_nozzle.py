@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 import pytest
 # import modules
-import engine_builder
+import optimizations
+import cooling
+import nozzle
 
 
 def test_stuff():
