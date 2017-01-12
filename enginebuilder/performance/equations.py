@@ -18,9 +18,11 @@ class performance(object):
 
     def get_performance(self):
         self.g0 = self.get_g0()
+        self.Rspecific = self.get_Rspecific()
         # self.pexit = self.get_pexit(int(self.params.alt))
         self.epsilon = self.get_epsilon(0)
         self.Cf = self.get_Cf(0)
+        self.cee_star = self.get_cee_star(0)
         self.wdot = self.get_wdot(0)
         self.pthroat = self.get_pthroat(0)
 
