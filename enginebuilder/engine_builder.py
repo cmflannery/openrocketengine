@@ -3,7 +3,6 @@ import os
 import sys
 import inspect
 import subprocess
-import pytest
 # imports from enginebuilder module
 from performance.prompts import *
 from performance.propellant import *
@@ -70,9 +69,6 @@ class parameters(object):
         self.gamma = prop_data.gamma
         self.L_star = prop_data.L_star
         self.MW = prop_data.MW
-
-    def test_prop_data(self):
-        assert self.Isp == -1
 
     def convert(self):
         # create convert object
