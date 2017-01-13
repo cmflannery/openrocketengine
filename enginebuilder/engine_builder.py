@@ -1,15 +1,15 @@
-""" engine_builder is the openrocketengine module """
 #!/usr/bin/env python
+""" engine_builder is the openrocketengine module """
 import os
 import subprocess
 # imports from enginebuilder module
-import enginebuilder.performance.propellant as prop
-import enginebuilder.performance.equations as eqs
-import enginebuilder.tca.nozzle as nzl
-import enginebuilder.common.prompts as pts
-import enginebuilder.common.gen_output as genout
-import enginebuilder.common.conversions as conv
-import enginebuilder.common.ascii_art as ascii_art
+from performance.propellant import PropValues
+from performance.equations import Performance
+from tca.nozzle import Nozzle
+from common.prompts import UserPrompts
+from common.gen_output import Outputs
+from common.conversions import UnitConverter
+from common.ascii_art import AsciiText, AsciiImage
 # Class definitions used to build engines.
 # Manages engine development scripts
 __author__ = "Cameron Flannery"
@@ -34,11 +34,11 @@ class Engine(object):
         # create parameters obj
         self.parameters = Parameters()
         # create performance/equations obj
-        self.performance = eqs.Performance(self.parameters)
+        self.performance = Performance(self.parameters)
         # create nozzle dimension obj
-        self.nozzle = nzl.Nozzle(self.performance, self.parameters)
+        self.nozzle = Nozzle(self.performance, self.parameters)
         # create outputs obj
-        self.outputs = genout.Outputs(self)
+        self.outputs = Outputs(self)
 
 
 class Parameters(object):
@@ -54,7 +54,7 @@ class Parameters(object):
         """get_prompts() creates UserPrompts instance
 
         responses are saved to Parameters instance as intrinsic Parameters"""
-        prompt_responses = pts.UserPrompts()
+        prompt_responses = UserPrompts()
         self.units = prompt_responses.units
         self.thrust = prompt_responses.thrust
         self.alt = prompt_responses.alt
@@ -67,7 +67,7 @@ class Parameters(object):
 
         results are saved to Parameters instance as intrinsic Parameters"""
         # create prop_values obj
-        propdata = prop.PropValues(self.propellants)
+        propdata = PropValues(self.propellants)
         self.Isp = propdata.Isp
         self.MR = propdata.MR
         self.Tc = propdata.Tc
@@ -81,7 +81,7 @@ class Parameters(object):
         if the user uses metric units, this method is called and the results
         are used to convert the units taken from data resources"""
         # create convert object
-        convert_obj = conv.UnitConverter(self)
+        convert_obj = UnitConverter(self)
         # self.Tc = convert_obj.Tc
         self.L_star = convert_obj.L_star
         self.MW = convert_obj.MW
@@ -93,7 +93,7 @@ def print_logo_image():
     path = os.path.dirname(__file__)
     fname = os.path.join(path, 'resources', 'openrocketengine.txt')
 
-    logo_image = ascii_art.AsciiImage(fname)
+    logo_image = AsciiImage(fname)
     logo_image.display_image()
 
 
@@ -102,7 +102,7 @@ def print_logo_text():
     # display ascii art text
     text_to_print = 'OpenRocketEng'
 
-    logo_text = ascii_art.AsciiText(text_to_print)
+    logo_text = AsciiText(text_to_print)
     logo_text.display_text()
 
 
