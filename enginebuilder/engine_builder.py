@@ -6,7 +6,7 @@ import subprocess
 # imports from enginebuilder module
 from performance.propellant import *
 from performance.equations import *
-from nozzle.nozzle import *
+from tca.nozzle import *
 from common.prompts import *
 from common.gen_output import *
 from common.conversions import *

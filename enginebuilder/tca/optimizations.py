@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 import numpy as np
-import deap
+from deap import base
+from deap import creator
+from deap import tools
 # optimizations.py
 __author__ = "Cameron Flannery"
 __copyright__ = "Copyright 2017"

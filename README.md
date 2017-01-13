@@ -2,20 +2,26 @@
 [![Build status](https://travis-ci.org/cmflannery/openrocketengine.svg?branch=master)](https://travis-ci.org/cmflannery/openrocketengine)
 
 [openrocketengine](https://github.com/cmflannery/openrocketengine) is an open source project designed to help with the design and development of liquid rocket engines
-The equations used in this program were taken from [_Design of Liquid Propellant Rocket Engines_](https://ntrs.nasa.gov/archive/nasa/casi.ntrs.nasa.gov/19710019929.pdf) by Huzel and Huang.
+The equations used in this program were taken from [_Design of Liquid Propellant Rocket Engines_][2] by Huzel and Huang.
 
 ## Running openrocketengine
 To run openrocketengine, execute [engine_builder.py](https://github.com/cmflannery/openrocketengine/engine_builder.py) with a python 2.7 interpreter from the [enginebuilder](https://github.com/cmflannery/openrocketengine/) directory.
 
 ## Release Notes
-__Alpha Release - Version 0.1__
+__Alpha Release - Version 0.0.1__
 
 Currently, the program does not compute propellant curves. Consequently, chamber pressure can not be optimized, and a value of 75 atm is chosen. This is a dangerous assumption. Until [curves.py](https://github.com/cmflannery/openrocketengine/enginebuilder/performance/curves.py) is complete, the results obtained with openrocketengine should not be consulted in the design of any liquid rocket engine.
 
-All analysis is done at steady-state.
+Currently, all analysis is done at steady-state.
 
 ## Contribution guidlines
-Community support is welcome. Pull requests are encouraged for meaningful changes.
+Community support is welcome.
+
+For __problems__ with calculations and equations, open an __issue__ and it will be corrected by one of the admins.
+
+For __improvements__ to algorithms, create a __pull request__ that details what has been changed.
+
+For all other contributions, use issues and pull requests at your discretion.
 
 ## Verification and Validation
 openrocketengine undergoes verification and validation testing in accordance to IEEE 1012-2012.
@@ -33,6 +39,7 @@ __Parameters to Optimize__
 * thrust/weight ratio
 * material cost
 * manufacturing difficulty (this will be hard)
+Using the DEAP library, a genetic algorithm will be used to optimize the liquid engine design across these parameters.
 
 #### 3D Modeling
 Currently, openrocketengine creates an excel file with some design parameters that can be used to design an engine. Future support for generating '.IGES' files would be great.
@@ -45,10 +52,10 @@ openrocketengine should have the ability to take test data inputs and use that i
 #### Latex output
 Generate latex calculations output using template.
 
-## References
-[GATech: Bell Nozzles](http://soliton.ae.gatech.edu/people/jseitzma/classes/ae6450/bell_nozzle.pdf)
-</br>
-[_Design of Liquid Propellant Rocket Engines_](https://ntrs.nasa.gov/archive/nasa/casi.ntrs.nasa.gov/19710019929.pdf)
-
 ## Licensing
 openrocketengine is released under the MIT license.
+
+<!-- References -->
+[1]: http://soliton.ae.gatech.edu/people/jseitzma/classes/ae6450/bell_nozzle.pdf "GATech: Bell Nozzles"
+[2]: https://ntrs.nasa.gov/archive/nasa/casi.ntrs.nasa.gov/19710019929.pdf "Design of Liquid Propellant Rocket Engines"
+[3]: https://ntrs.nasa.gov/archive/nasa/casi.ntrs.nasa.gov/19720026079.pdf "Liquid Propellant Rocket Combustion Instability, NASA SP-194"

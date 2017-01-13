@@ -2,11 +2,11 @@
 import pytest
 # import modules to test
 from propellant import *
-import equations
-import curves
+from equations import *
+from curves import *
 
 
-# unit tests
+# unit tests: classes and functions
 class params_test(object):
     def __init__(self):
         self.units = 0
@@ -22,11 +22,6 @@ def test_equations():
     # assert perform.g0 == 32.174
 
 
-# integration tests
+# integration tests: passing classes, etc.
 def test_inte():
-    return 0
-
-
-# system tests
-def test_sys():
     return 0
