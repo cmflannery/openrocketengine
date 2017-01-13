@@ -13,8 +13,8 @@ __email__ = "cmflannery@ucsd.edu"
 __status__ = "Development"
 
 
-class ascii_text(object):
-    """ ascii_text creates an object that can be used to display ascii text on\
+class AsciiText(object):
+    """ AsciiText creates an object that can be used to display ascii text on\
     the console """
     def __init__(self, text):
         self.ShowText = text
@@ -42,8 +42,8 @@ class ascii_text(object):
             print ''.join(line)
 
 
-class ascii_image(object):
-    """ ascii_image creates an object that can be used to display an image to
+class AsciiImage(object):
+    """ AsciiImage creates an object that can be used to display an image to
     the console """
     def __init__(self, fname):
         self.fname = fname

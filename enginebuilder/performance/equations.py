@@ -11,7 +11,7 @@ __email__ = "cmflannery@ucsd.edu"
 __status__ = "Development"
 
 
-class performance(object):
+class Performance(object):
     def __init__(self, parameters):
         self.params = parameters
         self.get_performance()
@@ -37,7 +37,7 @@ class performance(object):
 
     def get_Rspecific(self):
         # set Rspecific
-        if self.paramas.units == 0:
+        if self.params.units == 0:
             return 18544.2/self.params.MW  # in^3 lb mol deg R
         elif self.params.units == 1:
             return 8314.459848/self.params.MW
@@ -73,8 +73,8 @@ class performance(object):
     def get_cee_star(self, option):
         # set c* (characteristic velocity)
         if option == 0:
-            cee_star = np.sqrt(self.params.g0 * self.params.gamma *
-                               self.params.Rspecific * self.params.Tc_ns) / \
+            cee_star = np.sqrt(self.g0 * self.params.gamma *
+                               self.Rspecific * self.params.Tc) / \
                               (self.params.gamma *
                                np.sqrt((2.0 / (self.params.gamma+1)) **
                                        ((self.params.gamma+1) /

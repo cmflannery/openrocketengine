@@ -12,7 +12,7 @@ __email__ = "cmflannery@ucsd.edu"
 __status__ = "Development"
 
 
-class nozzle(object):
+class Nozzle(object):
     def __init__(self, performance, parameters):
         self.performance = performance
         self.parameters = parameters
@@ -59,7 +59,7 @@ class nozzle(object):
                 self.Dthroat) / np.tan(15.00/180.00*np.pi)
 
 
-class bell(object):
+class Bell(object):
     """Define dimensions and parameters for an 80deg bell nozzle."""
     def __init__(self, nozzle_obj, bell_percent):
         self.nozzle_obj = nozzle_obj
@@ -84,7 +84,7 @@ class bell(object):
         pass
 
 
-class conic(object):
+class Conic(object):
     """docstring for conic."""
     def __init__(self, arg):
         super(conic, self).__init__()

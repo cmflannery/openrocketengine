@@ -20,7 +20,7 @@ with open(prop_file) as propellant_raw:
     propellant_raw.close()
 
 
-class prop_values(object):
+class PropValues(object):
     def __init__(self, propellants):
         self.propellants = propellants
         self.pull_all()

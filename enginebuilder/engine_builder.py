@@ -1,16 +1,15 @@
+""" engine_builder is the openrocketengine module """
 #!/usr/bin/env python
 import os
-import sys
-import inspect
 import subprocess
 # imports from enginebuilder module
-from performance.propellant import *
-from performance.equations import *
-from tca.nozzle import *
-from common.prompts import *
-from common.gen_output import *
-from common.conversions import *
-from common.ascii_art import *
+import enginebuilder.performance.propellant as prop
+import enginebuilder.performance.equations as eqs
+import enginebuilder.tca.nozzle as nzl
+import enginebuilder.common.prompts as pts
+import enginebuilder.common.gen_output as genout
+import enginebuilder.common.conversions as conv
+import enginebuilder.common.ascii_art as ascii_art
 # Class definitions used to build engines.
 # Manages engine development scripts
 __author__ = "Cameron Flannery"
@@ -24,35 +23,38 @@ __status__ = "Development"
 
 
 # engine class retrieves and stores all outputs for each run
-class engine(object):
-    # engine class is primary class that openrocketengine uses to create a
-    # liquid rocket engine
-    # inputs and outputs are stored here.
+class Engine(object):
+    """Create and optimize liquid engine design"""
     def __init__(self):
         self.pchamber = 75.0  # assumption for testing
+        self.start_building()
 
     def start_building(self):
+        """Create objects necessary to build and optimze engine"""
         # create parameters obj
-        self.parameters = parameters()
+        self.parameters = Parameters()
         # create performance/equations obj
-        self.performance = performance(self.parameters)
+        self.performance = eqs.Performance(self.parameters)
         # create nozzle dimension obj
-        self.nozzle = nozzle(self.performance, self.parameters)
+        self.nozzle = nzl.Nozzle(self.performance, self.parameters)
         # create outputs obj
-        self.outputs = outputs(self)
+        self.outputs = genout.Outputs(self)
 
 
-class parameters(object):
-    """ parameters class holds values from propellant.json starts prompts to
- get input parameters from user prompts from /performance/prompts.py"""
+class Parameters(object):
+    """parameters prompt user for inputs and pull data from resuorces"""
     def __init__(self):
         self.pchamber = 75.00  # constant, assumption
         self.get_prompts()
         self.get_prop_data()
-        self.convert()
+        if self.units == '1':
+            self.convert()
 
     def get_prompts(self):
-        prompt_responses = user_prompts()
+        """get_prompts() creates UserPrompts instance
+
+        responses are saved to Parameters instance as intrinsic Parameters"""
+        prompt_responses = pts.UserPrompts()
         self.units = prompt_responses.units
         self.thrust = prompt_responses.thrust
         self.alt = prompt_responses.alt
@@ -61,38 +63,51 @@ class parameters(object):
         self.pexit = prompt_responses.pexit
 
     def get_prop_data(self):
+        """get_prop_data() creates a PropValues instance
+
+        results are saved to Parameters instance as intrinsic Parameters"""
         # create prop_values obj
-        prop_data = prop_values(self.propellants)
-        self.Isp = prop_data.Isp
-        self.MR = prop_data.MR
-        self.Tc = prop_data.Tc
-        self.gamma = prop_data.gamma
-        self.L_star = prop_data.L_star
-        self.MW = prop_data.MW
+        propdata = prop.PropValues(self.propellants)
+        self.Isp = propdata.Isp
+        self.MR = propdata.MR
+        self.Tc = propdata.Tc
+        self.gamma = propdata.gamma
+        self.L_star = propdata.L_star
+        self.MW = propdata.MW
 
     def convert(self):
+        """convert creates an instances of the UnitConverter object
+
+        if the user uses metric units, this method is called and the results
+        are used to convert the units taken from data resources"""
         # create convert object
-        convert_obj = unit_converter(self)
+        convert_obj = conv.UnitConverter(self)
+        # self.Tc = convert_obj.Tc
+        self.L_star = convert_obj.L_star
+        self.MW = convert_obj.MW
 
 
 def print_logo_image():
+    """print rocket image (ascii art) to console"""
     # prints ascii art of rocket stored in /resources/openrocketengine
     path = os.path.dirname(__file__)
     fname = os.path.join(path, 'resources', 'openrocketengine.txt')
 
-    logo_image = ascii_image(fname)
+    logo_image = ascii_art.AsciiImage(fname)
     logo_image.display_image()
 
 
 def print_logo_text():
+    """print OpenRocketEng to console"""
     # display ascii art text
-    ShowText = 'OpenRocketEng'
+    text_to_print = 'OpenRocketEng'
 
-    logo_text = ascii_text(ShowText)
+    logo_text = ascii_art.AsciiText(text_to_print)
     logo_text.display_text()
 
 
 def main():
+    """main function, starts program"""
     try:
         subprocess.call('cls', shell=True)
     except OSError:
@@ -101,7 +116,7 @@ def main():
     print_logo_text()
     print "\n\nLets build a rocket engine!\n"
 
-    eng = engine()
+    eng = Engine()
     eng.start_building()
 
 if __name__ == "__main__":

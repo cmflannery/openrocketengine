@@ -10,22 +10,7 @@ __email__ = "cmflannery@ucsd.edu"
 __status__ = "Development"
 
 
-class user_prompt(object):
-    def __init__(self, prompt_question, choices):
-        self.prompt_question = prompt_question  # single string
-        self.choices = choices  # tuple of strings
-
-    def start_prompt(self):
-        confirmed = False
-        while not(confirmed):
-            print self.prompt_question
-            for i in range(0, len(self.choices)-1):
-                print i,
-                print self.choices[i]
-            self.value = raw_input()
-
-
-class user_prompts(object):
+class UserPrompts(object):
     def __init__(self):
         self.start_prompts()
         pass

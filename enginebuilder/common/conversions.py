@@ -11,13 +11,13 @@ __email__ = "cmflannery@ucsd.edu"
 __status__ = "Development"
 
 
-class unit_converter(object):
+class UnitConverter(object):
     def __init__(self, parameters):
         self.params = parameters
         # start conversions
         self.start_pressure_conversions()
-        self.convert_MW()
-        self.convert_L_star()
+        self.MW = self.convert_MW()
+        self.L_star = self.convert_L_star()
 
     def start_pressure_conversions(self):
         self.params.pchamber = self.convert_pressure(self.params.pchamber)
@@ -35,20 +35,16 @@ class unit_converter(object):
 
     def convert_MW(self):
         if self.params.units == "0":
-            self.params.MW = self.params.MW * 0.002204622
-            return 0
+            return self.params.MW * 0.002204622
         elif self.params.units == "1":
-            self.params.MW = self.params.MW
-            return 0
+            return self.params.MW
         else:
             return -1
 
     def convert_L_star(self):
         if self.params.units == "0":
-            self.params.L_star = self.params.L_star / 2.54
-            return 0
+            return self.params.L_star / 2.54
         elif self.params.units == "1":
-            self.params.L_star = self.params.L_star
-            return 0
+            return self.params.L_star
         else:
             return -1
