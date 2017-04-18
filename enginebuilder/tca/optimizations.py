@@ -18,3 +18,7 @@ class OptimizeContractionRatio(object):
     """opt_contraction_ratio optimizes the contraction area ratio."""
     def __init__(self):
         super(opt_contraction_ratio, self).__init__()
+
+
+# deap
+creator.create("ResonanceMin", base.fitness, weights=(1.0,))
