@@ -1,4 +1,5 @@
-from setuptools import setup
+from setuptools import setup, Extension, find_packages
+import platform
 
 setup(name='openeng',
       version='1.0',

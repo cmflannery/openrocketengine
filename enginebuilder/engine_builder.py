@@ -27,7 +27,6 @@ class Engine(object):
     """Create and optimize liquid engine design"""
     def __init__(self):
         self.pchamber = 75.0  # assumption for testing
-        self.start_building()
 
     def start_building(self):
         """Create objects necessary to build and optimze engine"""
