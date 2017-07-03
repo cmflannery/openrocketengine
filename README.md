@@ -8,7 +8,7 @@ The equations used in this program were taken from [_Design of Liquid Propellant
 To run openrocketengine, execute [engine_builder.py](https://github.com/cmflannery/openrocketengine/engine_builder.py) with a python 2.7 interpreter from the [enginebuilder](https://github.com/cmflannery/openrocketengine/) directory.
 
 ## Release Notes
-__Alpha Release - Version 0.0.1__
+__Pre-release - Version 0.0.1__
 
 Currently, the program does not compute propellant curves. Consequently, chamber pressure can not be optimized, and a value of 75 atm is chosen. This is a dangerous assumption. Until [curves.py](https://github.com/cmflannery/openrocketengine/enginebuilder/performance/curves.py) is complete, the results obtained with openrocketengine should not be consulted in the design of any liquid rocket engine.
 
@@ -27,8 +27,6 @@ For all other contributions, use issues and pull requests at your discretion.
 openrocketengine undergoes verification and validation testing in accordance to IEEE 1012-2012.
 
 ## Functionality
-A comprehensive overview of openrocketengine is available in the [wiki](https://github.com/cmflannery/openrocketengine/wiki).
-
 Currently, the program supports liquid engine design with propellant combinations seen in [propellant.json](https://github.com/cmflannery/openrocketengine/enginebuilder/propellant.json).
 Vacuum engine design is not yet fully supported. Namely, there is currently no method used to optimize the exit area of the nozzle. This will likely require more user input as it will be the optimization of nozzle weight, material selection, and expansion area ratio.
 
