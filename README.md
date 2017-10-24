@@ -19,8 +19,7 @@ For all other contributions, use issues and pull requests at your discretion.
 openrocketengine undergoes verification and validation testing in accordance to IEEE 1012-2012.
 
 ## Functionality
-Currently, the program supports liquid engine design with propellant combinations seen in [propellant.json](https://github.com/cmflannery/openrocketengine/enginebuilder/propellant.json).
-Vacuum engine design is not yet fully supported. Namely, there is currently no method used to optimize the exit area of the nozzle. This will likely require more user input as it will be the optimization of nozzle weight, material selection, and expansion area ratio.
+I'll post a thorough description of the functionality here soon.
 
 #### Current Challenges
 What parameters need to be optimized, and what is an optimized engine design?
@@ -32,11 +31,8 @@ __Parameters to Optimize__
 Using the DEAP library, a genetic algorithm will be used to optimize the liquid engine design across these parameters.
 
 #### 3D Modeling
-Eventually, I want <code>openrocketengine</code> to output a generic IGES file given the chamber dimensions and design
-<<<<<<< HEAD
+Eventually, I want <code>openrocketengine</code> to output a generic IGES file given the chamber dimensions and design.
 
-=======
->>>>>>> e40e3b19d96c3cf1f011fb5335192cbb0a163d4e
 #### Design Iteration and Testing
 openrocketengine should have the ability to take test data inputs and use that information to improve the engine model.
 
