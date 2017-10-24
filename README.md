@@ -27,8 +27,7 @@ What parameters need to be optimized, and what is an optimized engine design?
 __Parameters to Optimize__
 * thrust/weight ratio
 * material cost
-* manufacturing difficulty (this will be hard)
-Using the DEAP library, a genetic algorithm will be used to optimize the liquid engine design across these parameters.
+* manufacturing difficulty (this will be difficult)
 
 #### 3D Modeling
 Eventually, I want <code>openrocketengine</code> to output a generic IGES file given the chamber dimensions and design.
