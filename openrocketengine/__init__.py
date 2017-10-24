@@ -5,5 +5,6 @@ import warnings
 
 from . import core
 from .core import enginemanager
-from .enginemanager import *
+# enginemanager has some crucial classes so let's make it visible from the top
+from .core.enginemanager import *
 from . import performance
