@@ -17,24 +17,6 @@ class Engine():
     def stuff(self):
         pass
 
-def print_logo_image():
-    """print rocket image (ascii art) to console"""
-    # prints ascii art of rocket stored in /resources/openrocketengine
-    path = os.path.dirname(__file__)
-    fname = os.path.join(path, 'resources', 'openrocketengine.txt')
-
-    logo_image = AsciiImage(fname)
-    logo_image.display_image()
-
-
-def print_logo_text():
-    """print OpenRocketEng to console"""
-    # display ascii art text
-    text_to_print = 'OpenRocketEng'
-
-    logo_text = AsciiText(text_to_print)
-    logo_text.display_text()
-
 
 def main():
     """main function, starts program"""
@@ -42,8 +24,6 @@ def main():
         subprocess.call('cls', shell=True)
     except OSError:
         subprocess.call('clear')
-    print_logo_image()
-    print_logo_text()
     print("\n\nLets build a rocket engine!\n")
 
     eng = Engine()
