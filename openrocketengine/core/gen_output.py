@@ -3,15 +3,7 @@ import xlsxwriter
 import datetime
 import time
 import os
-# gen_output.py
-__author__ = "Cameron Flannery"
-__copyright__ = "Copyright 2017"
-__credits__ = ["Cameron Flannery"]
-__license__ = "MIT"
-__version__ = "0.0.1"
-__maintainer__ = "Cameron Flannery"
-__email__ = "cmflannery@ucsd.edu"
-__status__ = "Development"
+""" gen_output.py saves your results in a convenient format """
 
 
 class Outputs(object):
@@ -43,9 +35,9 @@ class Outputs(object):
         self.write_units()
         self.workbook.close()
 
-        print "\nEngine outputs have been generated in the '/output'"
-        print "The file name is:",
-        print file_name
+        print("\nEngine outputs have been generated in the '/output'")
+        print("The file name is:",)
+        print(file_name)
 
         return 0
 

@@ -2,15 +2,7 @@
 from PIL import ImageFont
 from PIL import ImageDraw
 from PIL import Image
-# ascii_art.py
-__author__ = "Cameron Flannery"
-__copyright__ = "Copyright 2017"
-__credits__ = ["Cameron Flannery"]
-__license__ = "MIT"
-__version__ = "0.0.1"
-__maintainer__ = "Cameron Flannery"
-__email__ = "cmflannery@ucsd.edu"
-__status__ = "Development"
+""" ascii_art.py is makes pretty things in the console """
 
 
 class AsciiText(object):
@@ -39,7 +31,7 @@ class AsciiText(object):
                     line.append(' '),
                 else:
                     line.append('#'),
-            print ''.join(line)
+            print(''.join(line))
 
 
 class AsciiImage(object):
@@ -50,4 +42,4 @@ class AsciiImage(object):
 
     def display_image(self):
         with open(self.fname, 'r') as fin:
-            print fin.read()
+            print(fin.read())

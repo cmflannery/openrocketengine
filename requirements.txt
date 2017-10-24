@@ -1,6 +1,0 @@
-numpy==1.11.3
-pytest==3.0.5
-pillow==3.2.0
-subprocess.run==0.0.8
-XlsxWriter==0.8.5
-deap==1.0.2.post2
