@@ -9,7 +9,7 @@ __Pre-release - Version 0.0.2__
 ## Contribution guidlines
 Community support is welcome.
 
-For __problems__ with calculations and equations, open an __issue__ and it will be corrected by one of the admins.
+For __problems__ with calculations and equations, open an __issue__ and I'll correct it.
 
 For __improvements__ to algorithms, create a __pull request__ that details what has been changed.
 
@@ -32,9 +32,7 @@ __Parameters to Optimize__
 Using the DEAP library, a genetic algorithm will be used to optimize the liquid engine design across these parameters.
 
 #### 3D Modeling
-Currently, openrocketengine creates an excel file with some design parameters that can be used to design an engine. Future support for generating '.IGES' files would be great.
-
-Looking at using/improving [this](https://pypi.python.org/pypi/pyIGES/0.0.27) library to generate .IGES files.
+Eventually, I want <code>openrocketengine</code> to output a generic IGES file given the chamber dimensions and design
 
 #### Design Iteration and Testing
 openrocketengine should have the ability to take test data inputs and use that information to improve the engine model.
