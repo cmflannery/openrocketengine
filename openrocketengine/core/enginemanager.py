@@ -1,8 +1,9 @@
-#!/usr/bin/env python
+from __future__ import division, absolute_import, print_function
 """ enginemanager """
 import os
 import subprocess
 import numpy as np
+from .thermo import *
 __author__ = "Cameron Flannery"
 __copyright__ = "Copyright 2017"
 __license__ = "MIT"
@@ -13,76 +14,86 @@ __status__ = "alpha"
 class Engine():
     """Create and optimize liquid engine design"""
     def __init__(self, thrust, Tc, pc, pa, MR, MW, gamma, **kwargs):
-        self.thrust = thrust
-        self.Tc = Tc
-        self.pc = pc
-        self.pa = pa
-        self.MR = MR
-        self.MW = MW  # [g/mol]
-        self.gamma = gamma
-        self.constants() # define some useful constants
+        self.designParameters = {'thrust': thrust, 'Tc':Tc, 'pc': pc, 'pa': pa,
+                                 'MR': MR, 'MW':MW, 'gamma':gamma}
 
         if 'pe' in kwargs:
-            self.pe = kwargs['pe']
+            self.designParameters['pe'] = kwargs['pe']
         else:
-            self.pe = self.pa
+            self.designParameters['pe'] = self.designParameters['pa']
 
-    def characterize_engine(self):
-        self.get_Rspecific()
-        self.get_cstar()
-        self.get_Cf()
-        self.get_Isp()
+        self.set_constants()
 
-    def constants(self):
-        self.Rbar = 8314  # J/kmol*K
-        self.g0 = 9.81  # m/s^2
-        return self.Rbar, self.g0
+        self.Thermo = Thermodynamics(self.designParameters, self.constants)
 
-    def get_Rspecific(self, Rbar=None, MW=None):
-        if Rbar == None:
-            Rbar = self.Rbar
-        if MW == None:
-            MW = self.MW
-        self.Rspecific = self.Rbar/self.MW
-        return self.Rspecific
+    def set_constants(self):
+        """ Define useful SI constants.
 
-    def get_pe(self, pa=14.7, **kwargs):
-        """ pressure values are given in atm
-            - default pambient is  1 """
-        self.pe = pa
-        return self.pa
+            Units:
+                Rbar: [kJ/kmol-K]
+                g0: [m/s^2] """
+        self.constants = {'Rbar': 8314, 'g0': 9.81}
+        return self.constants
 
-    def get_cstar(self, g0=None, gamma=None, Rspecific=None, Tc=None):
-        if g0 == None:
-            g0 = self.g0
-        if gamma == None:
-            gamma = self.gamma
-        if Rspecific == None:
-            Rspecific = self.Rspecific
-        if Tc == None:
-            Tc = self.Tc
-        self.cstar = np.sqrt(gamma*Rspecific*Tc)/(gamma*np.sqrt((2/(gamma+1))**((gamma+1)/(gamma-1))))
-        return self.cstar
+    @property
+    def thrust(self):
+        return self.designParameters['thrust']
 
-    def get_Cf(self, gamma=None, pe=None, pc=None):
-        if gamma == None:
-            gamma = self.gamma
-        if pe == None:
-            pe = self.pe
-        if pc == None:
-            pc = self.pc
-        self.Cf = np.sqrt((2*gamma**2/(gamma-1))*(2/(gamma+1))**((gamma+1)/(gamma-1))*(1-(pe/pc)**((gamma-1)/gamma)))
-        return self.Cf
+    @property
+    def Tc(self):
+        return self.designParamters['Tc']
 
-    def get_Isp(self, cstar=None, Cf=None, g0=None):
-        if cstar == None:
-            cstar = self.cstar
-        if Cf == None:
-            Cf = self.Cf
-        if g0 == None:
-            g0 = self.g0
-        self.Isp = cstar*Cf/g0
-        return self.Isp
+    @property
+    def pc(self):
+        return self.designParameters['pc']
+
+    @property
+    def pa(self):
+        return self.designParameters['pa']
+
+    @property
+    def pe(self):
+        return self.designParameters['pe']
+
+    @property
+    def MR(self):
+        return self.designParameters['MR']
+
+    @property
+    def MW(self):
+        return self.designParameters['MW']
+
+    @property
+    def gamma(self):
+        return self.designParameters['gamma']
+
+    @property
+    def Rspecific(self):
+        return self.Thermo.Rspecific
+
+    @property
+    def cstar(self):
+        return self.Thermo.cstar
+
+    @property
+    def Cf(self):
+        return self.Thermo.Cf
+
+    @property
+    def Isp(self):
+        return self.Thermo.Isp
+
+    @property
+    def mdot(self):
+        return self.Thermo.mdot
+
+    @property
+    def mdot_ox(self):
+        return self.Thermo.mdot_ox
+
+    @property
+    def mdot_f(self):
+        return self.Thermo.mdot_f
 
 
 def main():
