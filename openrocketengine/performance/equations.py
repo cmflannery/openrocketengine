@@ -2,20 +2,9 @@
 """ Equations used to define engine parameters and performance """
 
 
-class Performance(object):
-    def __init__(self, units='metric', **kwargs):
+class Performance():
+    def __init__(self, **kwargs):
         self.inputs
-        self.units = lower(units)
-        self.set_constants(units=self.units)
-        pass
-
-    def set_constants(self, units):
-        """ define some constants based on the value of units. """
-        if units == 'metric':
-            self.g0 = 9.81
-            self.Rbar = 345.7
-        elif units == 'english':
-            self.g0 = 32.17
         pass
 
     def set_Rspecific(self):
