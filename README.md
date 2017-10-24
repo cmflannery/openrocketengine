@@ -33,7 +33,10 @@ Using the DEAP library, a genetic algorithm will be used to optimize the liquid 
 
 #### 3D Modeling
 Eventually, I want <code>openrocketengine</code> to output a generic IGES file given the chamber dimensions and design
+<<<<<<< HEAD
 
+=======
+>>>>>>> e40e3b19d96c3cf1f011fb5335192cbb0a163d4e
 #### Design Iteration and Testing
 openrocketengine should have the ability to take test data inputs and use that information to improve the engine model.
 
