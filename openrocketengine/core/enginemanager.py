@@ -34,7 +34,7 @@ class Engine():
         self.get_Isp()
 
     def constants(self):
-        self.Rbar = 8.314  # J/mol*K
+        self.Rbar = 8314  # J/kmol*K
         self.g0 = 9.81  # m/s^2
         return self.Rbar, self.g0
 
@@ -46,7 +46,7 @@ class Engine():
         self.Rspecific = self.Rbar/self.MW
         return self.Rspecific
 
-    def get_pexit(self, pa=14.7, **kwargs):
+    def get_pe(self, pa=14.7, **kwargs):
         """ pressure values are given in atm
             - default pambient is  1 """
         self.pe = pa
@@ -61,7 +61,7 @@ class Engine():
             Rspecific = self.Rspecific
         if Tc == None:
             Tc = self.Tc
-        self.cstar = np.sqrt(g0*gamma*Rspecific*Tc)/(gamma*np.sqrt((2/(gamma+1))**((gamma+1)/(gamma-1))))
+        self.cstar = np.sqrt(gamma*Rspecific*Tc)/(gamma*np.sqrt((2/(gamma+1))**((gamma+1)/(gamma-1))))
         return self.cstar
 
     def get_Cf(self, gamma=None, pe=None, pc=None):
