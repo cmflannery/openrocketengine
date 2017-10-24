@@ -1,18 +1,10 @@
 # Welcome to openrocketengine
 [![Build status](https://travis-ci.org/cmflannery/openrocketengine.svg?branch=master)](https://travis-ci.org/cmflannery/openrocketengine)
 
-[openrocketengine](https://github.com/cmflannery/openrocketengine) is an open source project designed to help with the design and development of liquid rocket engines
-The equations used in this program were taken from [_Design of Liquid Propellant Rocket Engines_][2] by Huzel and Huang.
-
-## Running openrocketengine
-To run openrocketengine, execute [engine_builder.py](https://github.com/cmflannery/openrocketengine/engine_builder.py) with a python 2.7 interpreter from the [enginebuilder](https://github.com/cmflannery/openrocketengine/) directory.
+[openrocketengine](https://github.com/cmflannery/openrocketengine) is an open source project designed to help with the design and development of liquid rocket engines.
 
 ## Release Notes
-__Pre-release - Version 0.0.1__
-
-Currently, the program does not compute propellant curves. Consequently, chamber pressure can not be optimized, and a value of 75 atm is chosen. This is a dangerous assumption. Until [curves.py](https://github.com/cmflannery/openrocketengine/enginebuilder/performance/curves.py) is complete, the results obtained with openrocketengine should not be consulted in the design of any liquid rocket engine.
-
-Currently, all analysis is done at steady-state.
+__Pre-release - Version 0.0.2__
 
 ## Contribution guidlines
 Community support is welcome.
