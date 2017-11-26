@@ -3,7 +3,6 @@ from __future__ import division, absolute_import, print_function
 import os
 import subprocess
 import numpy as np
-from .thermo import *
 __author__ = "Cameron Flannery"
 __copyright__ = "Copyright 2017"
 __license__ = "MIT"
@@ -124,6 +123,14 @@ class Engine():
 ################################################################################
 #***************************** DEPENDENT VARIABLES *****************************
 ################################################################################
+    @property
+    def asound(self):
+        """ asound is the speed of sound """
+        Rspecific = self.Rspecific
+        gamma = self.gamma
+        Tc = self.Tc
+        return np.sqrt(gamma*Rspecific*Tc)
+
     @property
     def Rspecific(self):
         """ Rspecific [kg/kmol-K], specific gas constant """
@@ -254,15 +261,27 @@ class Engine():
         return pc * (2/(gamma+1))**(gamma/(gamma-1))
 
     @property
+    def ue(self):
+        """ calculate the exhaust velocity """
+
+        gamma = self.gamma
+        Rspecific = self.Rspecific
+        Tc = self.Tc
+        pc = self.pc
+        pe = self.pe
+
+        return np.sqrt(2*gamma/(gamma-1)*Rspecific*Tc*(1-(pe/pc)**((gamma-1)/gamma)))
+
+
+    @property
     def Ma_exit(self):
         """ Calculate and set the mach number at nozzle exit
 
         derived from pressure ratio equation
         """
-        pc = self.pc
-        gamma = self.gamma
-        pe = self.pe
-        return (pc/pe)**((gamma-1)/(2*gamma))/(1+(gamma-1)/2)**(1/2)
+        ue = self.ue
+        asound = self.asound
+        return ue/asound
 
     @property
     def At(self):

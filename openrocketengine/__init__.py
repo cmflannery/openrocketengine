@@ -7,5 +7,3 @@ from . import core
 from .core import enginemanager
 
 from .core.enginemanager import *
-from .core.chamber import *
-from .core.thermo import *
