@@ -18,7 +18,7 @@ class Thermodynamics():
         self.pe = parameters['pe']  # exit pressure
         self.pa = parameters['pa']  # ambient pressure
         self.MR = parameters['MR']  # mass ratio
-        self.MW = parameters['MW']  # molecular weight
+        self.MW = parameters['MW']  # molecular weight of propellants
         self.gamma = parameters['gamma']  # ratio of coefficients of heats
 
         self.constants = constants
