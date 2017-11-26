@@ -22,7 +22,6 @@ class Thermodynamics():
         self.gamma = parameters['gamma']  # ratio of coefficients of heats
 
         self.constants = constants
-        self.characterize_engine()
 
     def characterize_engine(self):
         self.parameters['Rspecific'] = self.get_Rspecific()
@@ -184,7 +183,7 @@ class Thermodynamics():
         Derived from the isentropic flow-critical pressure ratio """
 
         if 'pc' in kwargs:
-            pc = kwargs['pt']
+            pc = kwargs['pc']
         else:
             pc = self.pc
         if 'gamma' in kwargs:
@@ -206,6 +205,33 @@ class Thermodynamics():
             Tc = self.Tc
             self.Tt
         return self.Tt
+
+    def set_Ma_exit(self, **kwargs):
+        """ Calculate and set the mach number at nozzle exit
+
+        derived from pressure ratio equation
+        """
+
+        if 'pc' in kwargs:
+            pc = kwargs['pc']
+        else:
+            pc = self.pc
+        if 'gamma' in kwargs:
+            gamma = kwargs['gamma']
+        else:
+            gamma = self.gamma
+        if 'pe' in kwargs:
+            pe = kwargs['pe']
+        else:
+            pe = self.pe
+
+        self.Ma_exit = (pc/pe)**((gamma-1)/(2*gamma))/(1+(gamma-1)/2)**(1/2)
+        return self.Ma_exit
+
+    def get_Ma_exit(self):
+        """ get value of Ma_exit """
+
+        return self.Ma_exit
 
 
 def main():
