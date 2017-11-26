@@ -18,9 +18,6 @@ For all other contributions, use issues and pull requests at your discretion.
 ## Verification and Validation
 openrocketengine undergoes verification and validation testing in accordance to IEEE 1012-2012.
 
-## Functionality
-I'll post a thorough description of the functionality here soon.
-
 #### Current Challenges
 What parameters need to be optimized, and what is an optimized engine design?
 </br>
