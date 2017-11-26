@@ -1,7 +1,5 @@
 # Welcome to openrocketengine
-[![Build status](https://travis-ci.org/cmflannery/openrocketengine.svg?branch=master)](https://travis-ci.org/cmflannery/openrocketengine)
-
-[![Documentation Status](https://readthedocs.org/projects/openrocketengine/badge/?version=latest)](http://openrocketengine.readthedocs.io/en/latest/?badge=latest)
+[![Build status](https://travis-ci.org/cmflannery/openrocketengine.svg?branch=master)](https://travis-ci.org/cmflannery/openrocketengine) [![Documentation Status](https://readthedocs.org/projects/openrocketengine/badge/?version=latest)](http://openrocketengine.readthedocs.io/en/latest/?badge=latest)
 
 
 [openrocketengine](https://github.com/cmflannery/openrocketengine) is an open source project designed to help with the design and development of liquid rocket engines.
