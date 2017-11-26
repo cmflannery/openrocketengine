@@ -14,17 +14,19 @@ __status__ = "alpha"
 class Engine():
     """Create and optimize liquid engine design"""
     def __init__(self, thrust, Tc, pc, pa, MR, MW, gamma, **kwargs):
-        self.designParameters = {'thrust': thrust, 'Tc':Tc, 'pc': pc, 'pa': pa,
+        defaultParameters = ['thrust', 'Tc', 'pc', 'pa', 'MR', 'MW', 'gamma']
+        self.parameters = {'thrust': thrust, 'Tc':Tc, 'pc': pc, 'pa': pa,
                                  'MR': MR, 'MW':MW, 'gamma':gamma}
 
         if 'pe' in kwargs:
-            self.designParameters['pe'] = kwargs['pe']
+            self.parameters['pe'] = kwargs['pe']
         else:
-            self.designParameters['pe'] = self.designParameters['pa']
+            self.parameters['pe'] = self.parameters['pa']
 
         self.set_constants()
 
-        self.Thermo = Thermodynamics(self.designParameters, self.constants)
+        self.Thermo = Thermodynamics(self.parameters, self.constants)
+        self.parameters = Thermo.parameters
 
     def set_constants(self):
         """ Define useful SI constants.
@@ -37,7 +39,7 @@ class Engine():
 
     @property
     def thrust(self):
-        return self.designParameters['thrust']
+        return self.parameters['thrust']
 
     @property
     def Tc(self):
@@ -45,55 +47,59 @@ class Engine():
 
     @property
     def pc(self):
-        return self.designParameters['pc']
+        return self.parameters['pc']
 
     @property
     def pa(self):
-        return self.designParameters['pa']
+        return self.parameters['pa']
 
     @property
     def pe(self):
-        return self.designParameters['pe']
+        return self.parameters['pe']
 
     @property
     def MR(self):
-        return self.designParameters['MR']
+        return self.parameters['MR']
 
     @property
     def MW(self):
-        return self.designParameters['MW']
+        return self.parameters['MW']
 
     @property
     def gamma(self):
-        return self.designParameters['gamma']
+        return self.parameters['gamma']
 
     @property
     def Rspecific(self):
-        return self.Thermo.Rspecific
+        return self.parameters['Rspecific']
 
     @property
     def cstar(self):
-        return self.Thermo.cstar
+        return self.parameters['cstar']
 
     @property
     def Cf(self):
-        return self.Thermo.Cf
+        return self.parameters['Cf']
 
     @property
     def Isp(self):
-        return self.Thermo.Isp
+        return self.parameters['Isp']
 
     @property
     def mdot(self):
-        return self.Thermo.mdot
+        return self.parameters['mdot']
 
     @property
     def mdot_ox(self):
-        return self.Thermo.mdot_ox
+        return self.parameters['mdot_ox']
 
     @property
     def mdot_f(self):
-        return self.Thermo.mdot_f
+        return self.parameters['mdot_f']
+
+    @property
+    def Tt(self):
+        return self.parameters['Tt']
 
 
 def main():

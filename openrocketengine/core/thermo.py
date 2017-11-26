@@ -11,27 +11,29 @@ __status__ = "alpha"
 
 class Thermodynamics():
     """ Thermodynamics() evalates engine performance values from design parameters """
-    def __init__(self, designParameters, constants):
-        self.thrust = designParameters['thrust']
-        self.Tc = designParameters['Tc']
-        self.pc = designParameters['pc']
-        self.pe = designParameters['pe']
-        self.pa = designParameters['pa']
-        self.MR = designParameters['MR']
-        self.MW = designParameters['MW']
-        self.gamma = designParameters['gamma']
+    def __init__(self, parameters, constants):
+        self.thrust = parameters['thrust']
+        self.Tc = parameters['Tc']  # chamber temperature
+        self.pc = parameters['pc']  # chamber pressure
+        self.pe = parameters['pe']  # exit pressure
+        self.pa = parameters['pa']  # ambient pressure
+        self.MR = parameters['MR']  # mass ratio
+        self.MW = parameters['MW']  # molecular weight
+        self.gamma = parameters['gamma']  # ratio of coefficients of heats
 
         self.constants = constants
         self.characterize_engine()
 
     def characterize_engine(self):
-        self.get_Rspecific()
-        self.get_cstar()
-        self.get_Cf()
-        self.get_Isp()
-        self.get_mdot()
-        self.get_mdot_ox()
-        self.get_mdot_f()
+        self.parameters['Rspecific'] = self.get_Rspecific()
+        self.parameters['cstar'] = self.get_cstar()
+        self.parameters['Cf'] = self.get_Cf()
+        self.parameters['Isp'] = self.get_Isp()
+        self.parameters['mdot'] = self.get_mdot()
+        self.parameters['mdot_ox'] = self.get_mdot_ox()
+        self.parameters['mdot_f'] = self.get_mdot_f()
+        self.parameters['pt'] = self.get_pt()
+        self.parameters['Tt'] = self.get_Tt()
 
     def get_Rspecific(self, **kwargs):
         """ Calculate the value of specific gas constant """
@@ -175,6 +177,35 @@ class Thermodynamics():
             MR = self.MR
         self.mdot_f = 1/(MR+1)*mdot
         return self.mdot_f
+
+    def get_pt(self, **kwargs):
+        """ Calculate the theoat pressure
+
+        Derived from the isentropic flow-critical pressure ratio """
+
+        if 'pc' in kwargs:
+            pc = kwargs['pt']
+        else:
+            pc = self.pc
+        if 'gamma' in kwargs:
+            gamma = kwargs['gamma']
+        else:
+            gamma = self.gamma
+
+        self.pt = pc * (2/(gamma+1))**(gamma/(gamma-1))
+        return self.pt
+
+    def get_Tt(self, **kwargs):
+        """ Calculate the throat temperature
+
+        Derived from isentropic flow-critical temperature ratio """
+
+        if 'Tc' in kwargs:
+            Tc = kwargs['Tc']
+        else:
+            Tc = self.Tc
+            self.Tt
+        return self.Tt
 
 
 def main():
