@@ -41,9 +41,10 @@ class Engine():
         # default values for variables
         self.contraction_angle = 60  # in degrees
         self.contraction_area_ratio = 5  # nondimensional
+        self.bell_length = 0.8
 
     def output_geometry(self):
-        indecies = ['Ac', 'At', 'Ae', 'Rc', 'Rt', 'Re', 'Vc', 'lstar', 'lcyl', 'beta']
+        indecies = ['Ac', 'At', 'Ae', 'Rc', 'Rt', 'Re', 'R1', 'Rn' 'Vc', 'lstar', 'lcyl', 'beta', 'ln']
         values = [
             self.Ac,
             self.At,
@@ -51,10 +52,13 @@ class Engine():
             self.Rc,
             self.Rt,
             self.Re,
+            self.R1,
+            self.Rn,
             self.Vc,
             self.lstar,
             self.lcyl,
-            self.contraction_angle
+            self.contraction_angle,
+            self.ln
         ]
         self.__outputs = pd.Series(values,index=indecies)
         return self.__outputs
@@ -380,9 +384,14 @@ class Engine():
 
     @property
     def Rn(self):
-        
-        """ radius of circular entrance region for parabolic approximation (rao) """
+        """ radius of circular entrance region for parabolic approximation (rao)
+        i.e. region leaving the throat """
         return 0.382*self.Rt  # from Huzel and Huang, 76
+
+    @property
+    def R1(self):
+        """ radius of circular entrance region to throat """
+        return 1.5*self.Rt  # from rao and Braeuing
 
     @property
     def expansion_area_ratio(self):
@@ -448,9 +457,30 @@ class Engine():
         Ac = self.Ac
         Rc = self.Rc
         Rt = self.Rt
-        beta = self.contraction_angle
+        beta = self.contraction_angle  # degrees
 
-        return Vc/Ac - 1/2*(Rc-Rt)/np.tan(beta)
+        return Vc/Ac - 1/2*(Rc-Rt)/np.tan(np.deg2rad(beta))
+
+    @property
+    def bell_length(self):
+        """ the percentage length of a 15 degree conical nozzle
+
+        default = 0.8 """
+
+        return self.__bell_length
+
+    @bell_length.setter
+    def bell_length(self, value):
+        self.__bell_length = value
+
+    @property
+    def ln(self):
+        """ length of nozzle """
+        Re = self.Re
+        Rt = self.Rt
+        bell_length = self.bell_length
+        angle = 15  # degrees
+        return (Re-Rt)/np.tan(np.deg2rad(angle))*bell_length
 
     def initUI(self):
         pass
