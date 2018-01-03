@@ -5,8 +5,8 @@ import os
 import subprocess
 import numpy as np
 import pandas as pd
-from PyQt5.QtWidgets import QWidget, QPushButton, QApplication
-from PyQt5.QtCore import QCoreApplication
+# from PyQt5.QtWidgets import QWidget, QPushButton, QApplication
+# from PyQt5.QtCore import QCoreApplication
 __author__ = "Cameron Flannery"
 __copyright__ = "Copyright 2017"
 __license__ = "MIT"
