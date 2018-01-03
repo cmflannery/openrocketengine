@@ -1,28 +1,34 @@
 from __future__ import division, absolute_import, print_function
 """ enginemanager """
+import sys
 import os
 import subprocess
 import numpy as np
+from PyQt5.QtWidgets import QWidget, QPushButton, QApplication
+from PyQt5.QtCore import QCoreApplication
 __author__ = "Cameron Flannery"
 __copyright__ = "Copyright 2017"
 __license__ = "MIT"
-__version__ = "0.0.2"
+__version__ = "0.0.3"
 __status__ = "alpha"
 
 # engine class retrieves and stores all outputs for each run
 class Engine():
     """Create and optimize liquid engine design"""
-    def __init__(self, **kwargs):
+    def __init__(self, requiredParams):
         defaultParameters = ['thrust', 'Tc', 'pc', 'pe', 'pa', 'MR', 'MW', 'gamma']
+        for parameter in defaultParameters:
+            if parameter not in requiredParams:
+                print(parameter, 'needs to be included in object initialization')
         try:
-            self.thrust = kwargs['thrust']
-            self.Tc = kwargs['Tc']
-            self.pc = kwargs['pc']
-            self.pa = kwargs['pa']
-            self.pe = kwargs['pe']
-            self.MR = kwargs['MR']
-            self.MW = kwargs['MW']
-            self.gamma = kwargs['gamma']
+            self.thrust = requiredParams['thrust']
+            self.Tc = requiredParams['Tc']
+            self.pc = requiredParams['pc']
+            self.pa = requiredParams['pa']
+            self.pe = requiredParams['pe']
+            self.MR = requiredParams['MR']
+            self.MW = requiredParams['MW']
+            self.gamma = requiredParams['gamma']
         except KeyError:
             print('Include all required parameters:', defaultParameters)
             raise
@@ -246,10 +252,11 @@ class Engine():
 
         if 'Tc' in kwargs:
             Tc = kwargs['Tc']
+            self.__Tt = Tc
         else:
             Tc = self.Tc
-            self.Tt = 0
-        return self.Tt
+            self.__Tt = 0
+        return self.__Tt
 
     @property
     def pt(self):
@@ -269,8 +276,8 @@ class Engine():
         Tc = self.Tc
         pc = self.pc
         pe = self.pe
-
-        return np.sqrt(2*gamma/(gamma-1)*Rspecific*Tc*(1-(pe/pc)**((gamma-1)/gamma)))
+        self.__ue = np.sqrt(2*gamma*Rspecific/(gamma-1)*Tc*(1-(pe/pc)**((gamma-1)/gamma)))
+        return self.__ue
 
 
     @property
@@ -281,7 +288,23 @@ class Engine():
         """
         ue = self.ue
         asound = self.asound
-        return ue/asound
+        self.__Ma_exit  = ue/asound
+        return self.__Ma_exit
+
+################################################################################
+#**************************** Chamber Calculations *****************************
+################################################################################
+
+    @property
+    def Ac(self):
+        """ Ac returns the chamber area """
+        if self.__Ac/self.Ae < 3:
+            print("Warning: A minimum area contraction ratio of 3 is recommended. Use the Ae or contraction area ratio setter to change the value of Ac")
+        return self.__Ac
+
+    @Ac.setter
+    def Ac(self,value):
+        self.__Ac = value
 
     @property
     def At(self):
@@ -298,14 +321,23 @@ class Engine():
         return self.calc_A(self.Ma_exit)
 
     @property
-    def Aratio(self):
+    def expansion_area_ratio(self):
         """ returns the expansion area ratio, Aexit/Athroat """
-
+ 
         return self.Ae/self.At
 
-################################################################################
-#********************************** FUNCTIONS **********************************
-################################################################################
+    @property
+    def contraction_area_ratio(self):
+        """ The contraction area ratio is the value of Ac/Ae. A minimum value of 3 is recommended
+        to consistently achieve mach 1 in the throat """
+        if self.__Ac/self.__Ae < 3:
+            print("Warning: A minimum area contraction ratio of 3 is recommended. Use the Ae or contraction area ratio setter to change the value of Ac")
+        
+        return self.__Ac/self.__Ae
+
+    @contraction_area_ratio.setter
+    def contraction_area_ratio(self,value):
+        self.Ac = Ae*value
 
     def calc_A(self, Ma):
         """ calc_A returns the area at an arbitrary station relative to the
@@ -319,7 +351,7 @@ class Engine():
 
         return At*1/Ma*((1 + ((gamma-1)/2)*Ma**2)/(1 + ((gamma-1)/2)))**((gamma+1)/(2*(gamma-1)))
 
-
+    def initUI(self):
 
 def main():
     try:
@@ -327,6 +359,7 @@ def main():
     except OSError:
         subprocess.call('clear')
     print("\n\nLets build a rocket engine!\n")
+    generate_gui()
 
 if __name__ == "__main__":
     try:
