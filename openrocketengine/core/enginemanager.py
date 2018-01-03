@@ -4,6 +4,7 @@ import sys
 import os
 import subprocess
 import numpy as np
+import pandas as pd
 from PyQt5.QtWidgets import QWidget, QPushButton, QApplication
 from PyQt5.QtCore import QCoreApplication
 __author__ = "Cameron Flannery"
@@ -15,20 +16,20 @@ __status__ = "alpha"
 # engine class retrieves and stores all outputs for each run
 class Engine():
     """Create and optimize liquid engine design"""
-    def __init__(self, requiredParams):
+    def __init__(self, **kwargs):
         defaultParameters = ['thrust', 'Tc', 'pc', 'pe', 'pa', 'MR', 'MW', 'gamma']
         for parameter in defaultParameters:
-            if parameter not in requiredParams:
+            if parameter not in kwargs:
                 print(parameter, 'needs to be included in object initialization')
         try:
-            self.thrust = requiredParams['thrust']
-            self.Tc = requiredParams['Tc']
-            self.pc = requiredParams['pc']
-            self.pa = requiredParams['pa']
-            self.pe = requiredParams['pe']
-            self.MR = requiredParams['MR']
-            self.MW = requiredParams['MW']
-            self.gamma = requiredParams['gamma']
+            self.thrust = kwargs['thrust']
+            self.Tc = kwargs['Tc']
+            self.pc = kwargs['pc']
+            self.pa = kwargs['pa']
+            self.pe = kwargs['pe']
+            self.MR = kwargs['MR']
+            self.MW = kwargs['MW']
+            self.gamma = kwargs['gamma']
         except KeyError:
             print('Include all required parameters:', defaultParameters)
             raise
@@ -36,6 +37,35 @@ class Engine():
         # set constants
         self.__Rbar = 8314  # [kJ/Kmol-K]
         self.__g0 = 9.81  # m/s^2
+
+        # default values for variables
+        self.contraction_angle = 60  # in degrees
+        self.contraction_area_ratio = 5  # nondimensional
+
+    def output_geometry(self):
+        indecies = ['Ac', 'At', 'Ae', 'Rc', 'Rt', 'Re', 'Vc', 'lstar', 'lcyl', 'beta']
+        values = [
+            self.Ac,
+            self.At,
+            self.Ae,
+            self.Rc,
+            self.Rt,
+            self.Re,
+            self.Vc,
+            self.lstar,
+            self.lcyl,
+            self.contraction_angle
+        ]
+        self.__outputs = pd.Series(values,index=indecies)
+        return self.__outputs
+
+    def output_performance(self):
+        indecies = ['Isp', 'Isp_vac']
+        values = [
+            self.Isp,
+            self.Isp_vac
+        ]
+        return self.output_performance
 
 ################################################################################
 #**************************** INDEPENDENT VARIABLES ****************************
@@ -195,27 +225,21 @@ class Engine():
 
     @property
     def Isp(self):
-        cstar = self.cstar
-        Cf = self.Cf
-        g0 = self.g0
-        return cstar*Cf/g0
-
-    @Isp.setter
-    def Isp(self, value):
         """ Isp, Specific Impulse [s]
 
         Specific Impulse is a commonly used performance metric for rocket
         engines
         """
-        required = ['cstar', 'Cf']
+        cstar = self.cstar
+        Cf = self.Cf
         g0 = self.g0
-        try:
-            cstar = value['cstar']
-            Cf = value['Cf']
-        except KeyError:
-            print('Include all required parameters:', required)
-            raise
-        self.__Isp = cstar*Cf/g0
+        return cstar*Cf/g0
+
+    @property
+    def Isp_vac(self):
+        """ Isp_vac, Specific Impulse in vacuum
+        """
+        return self.Isp
 
     @property
     def mdot(self):
@@ -286,25 +310,39 @@ class Engine():
 
         derived from pressure ratio equation
         """
-        ue = self.ue
-        asound = self.asound
-        self.__Ma_exit  = ue/asound
-        return self.__Ma_exit
+        # ue = self.ue
+        # asound = self.asound
+        # self.__Ma_exit  = ue/asound
+        # return self.__Ma_exit
+        gamma = self.gamma
+        pc = self.pc
+        pa = self.pa
+        return np.sqrt(2/(gamma-1)*((pc/pa)**((gamma-1)/gamma)-1))
 
 ################################################################################
 #**************************** Chamber Calculations *****************************
 ################################################################################
-
+    
+    # Notes: 
+    # Determine the area contraction ratio based on the injection velocities and
+    # compressible flow equations in a converging section.
+    # i.e. what convergence is necessary to achieve mach 1 in the throat?
+    # This is codable.. Add some margin for major losses
+    
     @property
     def Ac(self):
         """ Ac returns the chamber area """
-        if self.__Ac/self.Ae < 3:
-            print("Warning: A minimum area contraction ratio of 3 is recommended. Use the Ae or contraction area ratio setter to change the value of Ac")
-        return self.__Ac
+        return self.At*self.contraction_area_ratio
 
-    @Ac.setter
-    def Ac(self,value):
-        self.__Ac = value
+    @property
+    def Rc(self):
+        """ radius of combustion chamber """
+        return np.sqrt(self.Ac/np.pi)
+
+    @property
+    def Dc(self):
+        """ diameter of combustion chamber """
+        return 2*self.Rc
 
     @property
     def At(self):
@@ -315,29 +353,57 @@ class Engine():
         return cstar * mdot / pc
 
     @property
+    def Rt(self):
+        """ radius of the throat """
+        return np.sqrt(self.At/np.pi)
+
+    @property
+    def Dt(self):
+        """ diameter of the throat """
+        return self.Rt*2
+
+    @property
     def Ae(self):
         """ Ae returns the exit area of the rocket, assuming ideal expansion
         in a non-vacuum environment """
         return self.calc_A(self.Ma_exit)
 
     @property
+    def Re(self):
+        """ radius of exit """
+        return np.sqrt(self.Ae/np.pi)
+
+    @property
+    def De(self):
+        """ diameter of exit """
+        return 2*self.Re
+
+    @property
+    def Rn(self):
+        
+        """ radius of circular entrance region for parabolic approximation (rao) """
+        return 0.382*self.Rt  # from Huzel and Huang, 76
+
+    @property
     def expansion_area_ratio(self):
         """ returns the expansion area ratio, Aexit/Athroat """
- 
-        return self.Ae/self.At
+        return self.Ae/At
 
     @property
     def contraction_area_ratio(self):
         """ The contraction area ratio is the value of Ac/Ae. A minimum value of 3 is recommended
         to consistently achieve mach 1 in the throat """
-        if self.__Ac/self.__Ae < 3:
-            print("Warning: A minimum area contraction ratio of 3 is recommended. Use the Ae or contraction area ratio setter to change the value of Ac")
-        
-        return self.__Ac/self.__Ae
+        if self.__contraction_area_ratio:
+            return self.__contraction_area_ratio
+        else:
+            self.__contraction_area_ratio = self.__Ac/self.__Ae
+            if self.__contraction_area_ratio < 3:
+                print("Warning: A minimum area contraction ratio of 3 is recommended. Use the Ae or contraction area ratio setter to change the value of Ac")
+            return self.__contraction_area_ratio
 
     @contraction_area_ratio.setter
     def contraction_area_ratio(self,value):
-        self.Ac = Ae*value
+        self.__contraction_area_ratio = value
 
     def calc_A(self, Ma):
         """ calc_A returns the area at an arbitrary station relative to the
@@ -349,17 +415,60 @@ class Engine():
         At = self.At
         gamma = self.gamma
 
-        return At*1/Ma*((1 + ((gamma-1)/2)*Ma**2)/(1 + ((gamma-1)/2)))**((gamma+1)/(2*(gamma-1)))
+        # return At/Ma*((1 + ((gamma-1)/2)*Ma**2)/(1 + ((gamma-1)/2)))**((gamma+1)/(2*(gamma-1)))
+        return At/Ma*((1 + ((gamma-1)/2)*Ma**2)/((1 + gamma)/2))**((gamma+1)/(2*(gamma-1)))
+
+    @property
+    def contraction_angle(self):
+        return self.__contraction_angle
+
+    @contraction_angle.setter
+    def contraction_angle(self,value):
+        """ set in degrees """
+        self.__contraction_angle = value
+
+    @property
+    def lstar(self):
+        return self.__lstar
+
+    @lstar.setter
+    def lstar(self, value):
+        """ expects value in inches """
+        self.__lstar = value
+
+    @property
+    def Vc(self):
+        """ combustion chamber volume """
+        return self.lstar*self.At
+
+    @property
+    def lcyl(self):
+        """ length of cylindrical section of combustion chamber """
+        Vc = self.Vc
+        Ac = self.Ac
+        Rc = self.Rc
+        Rt = self.Rt
+        beta = self.contraction_angle
+
+        return Vc/Ac - 1/2*(Rc-Rt)/np.tan(beta)
 
     def initUI(self):
+        pass
 
 def main():
+    debugging = True
     try:
         subprocess.call('cls', shell=True)
     except OSError:
         subprocess.call('clear')
     print("\n\nLets build a rocket engine!\n")
     generate_gui()
+
+def debug():
+    rbf = Engine(thrust=1000, Tc=3300, pc=300, pe=12.3, pa=12.3, MR=2.77, MW=19.8, gamma=1.207)
+    rbf.lstar = 50
+    rbf.contraction_area_ratio = 8
+    print(rbf.output_geometry())
 
 if __name__ == "__main__":
     try:
