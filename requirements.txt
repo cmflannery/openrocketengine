@@ -2,3 +2,4 @@ pytest
 numpy
 xlsxwriter
 pandas
+PyQt5
