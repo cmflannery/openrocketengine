@@ -5,7 +5,7 @@
 [openrocketengine](https://github.com/cmflannery/openrocketengine) is an open source project designed to help with the design and development of liquid rocket engines.
 
 ## Release Notes
-__Pre-release - Version 0.0.2__
+__Pre-release - Version 0.0.3__
 
 ## Contribution guidlines
 Community support is welcome.
