@@ -129,10 +129,6 @@ class Engine():
     def pe(self, value):
         self.__pe = value
 
-    @pe.deleter
-    def pe(self):
-        del self.__pe
-
     @property
     def MR(self):
         """" MR [1], mixture ratio property """
