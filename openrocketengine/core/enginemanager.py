@@ -44,7 +44,7 @@ class Engine():
         self.bell_length = 0.8
 
     def output_geometry(self):
-        indecies = ['Ac', 'At', 'Ae', 'Rc', 'Rt', 'Re', 'R1', 'Rn' 'Vc', 'lstar', 'lcyl', 'beta', 'ln']
+        indecies = ['Ac', 'At', 'Ae', 'Rc', 'Rt', 'Re', 'R1', 'Rn', 'Vc', 'lstar', 'lcyl', 'beta', 'ln']
         values = [
             self.Ac,
             self.At,
@@ -60,16 +60,18 @@ class Engine():
             self.contraction_angle,
             self.ln
         ]
-        self.__outputs = pd.Series(values,index=indecies)
-        return self.__outputs
+        self.__output_geometry = pd.Series(values,index=indecies)
+        return self.__output_geometry
 
     def output_performance(self):
-        indecies = ['Isp', 'Isp_vac']
+        indecies = ['Isp', 'Isp_vac', 'ue']
         values = [
             self.Isp,
-            self.Isp_vac
+            self.Isp_vac,
+            self.ue
         ]
-        return self.output_performance
+        self.__output_performance = pd.Series(values,index=indecies)
+        return self.__output_performance
 
 ################################################################################
 #**************************** INDEPENDENT VARIABLES ****************************
@@ -495,6 +497,7 @@ def debug():
     rbf.lstar = 50
     rbf.contraction_area_ratio = 8
     print(rbf.output_geometry())
+    print(rbf.output_performance())
 
 if __name__ == "__main__":
     try:
