@@ -60,16 +60,18 @@ class Engine():
             self.contraction_angle,
             self.ln
         ]
-        self.__outputs = pd.Series(values,index=indecies)
-        return self.__outputs
+        self.__output_geometry = pd.Series(values,index=indecies)
+        return self.__output_geometry
 
     def output_performance(self):
-        indecies = ['Isp', 'Isp_vac']
+        indecies = ['Isp', 'Isp_vac', 'ue']
         values = [
             self.Isp,
-            self.Isp_vac
+            self.Isp_vac,
+            self.ue
         ]
-        return self.output_performance
+        self.__output_performance = pd.Series(values,index=indecies)
+        return self.__output_performance
 
 ################################################################################
 #**************************** INDEPENDENT VARIABLES ****************************
@@ -128,10 +130,6 @@ class Engine():
     @pe.setter
     def pe(self, value):
         self.__pe = value
-
-    @pe.deleter
-    def pe(self):
-        del self.__pe
 
     @property
     def MR(self):
@@ -499,6 +497,7 @@ def debug():
     rbf.lstar = 50
     rbf.contraction_area_ratio = 5.5
     print(rbf.output_geometry())
+    print(rbf.output_performance())
 
 if __name__ == "__main__":
     try:

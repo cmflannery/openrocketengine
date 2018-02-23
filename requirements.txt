@@ -1,5 +1,4 @@
 pytest
 numpy
 pandas
-sys
 subprocess
