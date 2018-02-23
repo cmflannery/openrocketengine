@@ -44,7 +44,7 @@ class Engine():
         self.bell_length = 0.8
 
     def output_geometry(self):
-        indecies = ['Ac', 'At', 'Ae', 'Rc', 'Rt', 'Re', 'R1', 'Rn' 'Vc', 'lstar', 'lcyl', 'beta', 'ln']
+        indecies = ['Ac', 'At', 'Ae', 'Rc', 'Rt', 'Re', 'R1', 'Rn', 'Vc', 'lstar', 'lcyl', 'beta', 'ln']
         values = [
             self.Ac,
             self.At,
@@ -497,7 +497,7 @@ def main():
 def debug():
     rbf = Engine(thrust=1000, Tc=3300, pc=300, pe=12.3, pa=12.3, MR=2.77, MW=19.8, gamma=1.207)
     rbf.lstar = 50
-    rbf.contraction_area_ratio = 8
+    rbf.contraction_area_ratio = 5.5
     print(rbf.output_geometry())
 
 if __name__ == "__main__":
