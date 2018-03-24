@@ -5,6 +5,14 @@ import os
 import subprocess
 import numpy as np
 import pandas as pd
+
+try:
+    import units
+except ModuleNotFoundError:
+    print('OpenRocketEngineError: units module not found. Units support not available.')
+
+import writer  # write results to an excel file
+
 # from PyQt5.QtWidgets import QWidget, QPushButton, QApplication
 # from PyQt5.QtCore import QCoreApplication
 __author__ = "Cameron Flannery"
@@ -17,6 +25,17 @@ __status__ = "alpha"
 class Engine():
     """Create and optimize liquid engine design"""
     def __init__(self, **kwargs):
+        """ default parameters required for initialization 
+
+        thrust := sea-level thrust
+        Tc := chamber temperature
+        pc := chamber pressure
+        pe := exit pressure
+        pa := ambient pressure
+        MR := mass ratio
+        MW := molecular weight
+        gamma := ratio of coefficients of heats """
+
         defaultParameters = ['thrust', 'Tc', 'pc', 'pe', 'pa', 'MR', 'MW', 'gamma']
         for parameter in defaultParameters:
             if parameter not in kwargs:
@@ -34,6 +53,11 @@ class Engine():
             print('Include all required parameters:', defaultParameters)
             raise
 
+        if 'name' in kwargs:
+            self.__name = kwargs['name']
+        else:
+            self.__name = False
+
         # set constants
         self.__Rbar = 8314  # [kJ/Kmol-K]
         self.__g0 = 9.81  # m/s^2
@@ -42,6 +66,9 @@ class Engine():
         self.contraction_angle = 60  # in degrees
         self.contraction_area_ratio = 5  # nondimensional
         self.bell_length = 0.8
+
+    def write_results(self):
+        writer.generate(self)
 
     def output_geometry(self):
         indecies = ['Ac', 'At', 'Ae', 'Rc', 'Rt', 'Re', 'R1', 'Rn', 'Vc', 'lstar', 'lcyl', 'beta', 'ln']
@@ -73,6 +100,16 @@ class Engine():
         self.__output_performance = pd.Series(values,index=indecies)
         return self.__output_performance
 
+    @property
+    def name(self):
+        """ name, engine name: optional parameter """
+        return self.__name
+    
+    @name.setter
+    def name(self,value):
+        """ set name """
+        self.__name = value
+
 ################################################################################
 #**************************** INDEPENDENT VARIABLES ****************************
 ################################################################################
@@ -88,12 +125,18 @@ class Engine():
 
     @property
     def thrust(self):
-        """ Thrust property [N] """
+        """ Thrust at sea-level [N] """
         return self.__thrust
 
     @thrust.setter
     def thrust(self, value):
         self.__thrust = value
+
+    @property
+    def thrust_vac(self):
+        """ Thrust in vacuum """
+        self.__thrust_vac = self.__thrust + self.pe*self.Ae
+        return self.__thrust_vac
 
     @property
     def Tc(self):
@@ -212,7 +255,7 @@ class Engine():
         return np.sqrt((2*gamma**2/(gamma-1))*(2/(gamma+1))**((gamma+1)/(gamma-1))*(1-(pe/pc)**((gamma-1)/gamma)))
 
     @Cf.setter
-    def get_Cf(self, value):
+    def Cf(self, value):
         """ Cf, Thrust Coefficient """
         required = ['pe','pc','gamma']
         try:
@@ -241,7 +284,8 @@ class Engine():
     def Isp_vac(self):
         """ Isp_vac, Specific Impulse in vacuum
         """
-        return self.Isp
+        thrust = self.thrust + (self.pe-0)*self.Ae
+        return thrust/(self.mdot*self.g0)
 
     @property
     def mdot(self):
@@ -486,16 +530,18 @@ class Engine():
 def main():
     debugging = True
     try:
-        subprocess.call('cls', shell=True)
-    except OSError:
         subprocess.call('clear')
+    except OSError:
+        subprocess.call('cls', shell=True)
     print("\n\nLets build a rocket engine!\n")
-    generate_gui()
+    # generate_gui()
+    debug()
 
 def debug():
-    rbf = Engine(thrust=1000, Tc=3300, pc=300, pe=12.3, pa=12.3, MR=2.77, MW=19.8, gamma=1.207)
+    rbf = Engine(name='Remove Before Flight',thrust=1000, Tc=3300, pc=300, pe=12.3, pa=12.3, MR=2.77, MW=19.8, gamma=1.207)
     rbf.lstar = 50
     rbf.contraction_area_ratio = 5.5
+    rbf.write_results()
     print(rbf.output_geometry())
     print(rbf.output_performance())
 
