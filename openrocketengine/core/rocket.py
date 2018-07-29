@@ -8,7 +8,9 @@ import os
 import subprocess
 import numpy as np
 import pandas as pd
-
+from datetime import datetime
+import xlsxwriter
+from string import ascii_uppercase
 
 __author__ = "Cameron Flannery"
 __copyright__ = "Copyright 2018"
@@ -22,18 +24,21 @@ class Engine():
     Initialization requirements are listed in the parameters below.
 
     Parameters:
-        thrust (float): [N] sea-level thrust
-        Tc (float): [K] chamber temperature
-        pc (float): [MPa] chamber pressure
-        pe (float): [MPa] exit pressure
-        pa (float): [MPa] ambient pressure
-        MR (float): [1] mass ratio
-        MW (float): [kmol/kg] molecular weight
+        name (str): Common name for the engine
+        thrust (float): sea-level thrust
+        Tc (float): chamber temperature
+        pc (float): chamber pressure
+        pe (float): exit pressure
+        pa (float): ambient pressure
+        MR (float): mass ratio
+        MW (float): molecular weight
         gamma (float): ratio of coefficients of heat
     """
     def __init__(self, thrust=None, Tc=None, pc=None, pe=None, pa=None, MR=None, MW=None,
-                 gamma=None, units=None):
+                 gamma=None, lstar=None, area_ratio=None, units=None, name=None):
         self.units = units
+        self.name = name
+
         self.thrust = thrust
         self.Tc = Tc
         self.pc = pc
@@ -41,6 +46,13 @@ class Engine():
         self.pa = pa
         self.MR = MR
         self.MW = MW
+        self.gamma = gamma
+        # geometric parameters
+        self.lstar = lstar
+        self.area_ratio = area_ratio  # chamber contraction area ratio
+
+        if self.pa is None:
+            self.pa = self.pe
 
         # set constants
         self.__Rbar = 8314  # [kJ/Kmol-K]
@@ -76,7 +88,7 @@ class Engine():
 
     @property
     def thrust(self):
-        """ Thrust at sea-level [N] """
+        """ Thrust at sea-level"""
         return self.__thrust
 
     @thrust.setter
@@ -91,7 +103,7 @@ class Engine():
 
     @property
     def Tc(self):
-        """ Tc [K], chamber temperature property """
+        """ Tc, chamber temperature property """
         return self.__Tc
 
     @Tc.setter
@@ -100,7 +112,7 @@ class Engine():
 
     @property
     def pc(self):
-        """ pc [Pa], chamber pressure property """
+        """ pc, chamber pressure property """
         return self.__pc
 
     @pc.setter
@@ -109,7 +121,7 @@ class Engine():
 
     @property
     def pa(self):
-        """ pa [Pa], ambient pressure property """
+        """ pa, ambient pressure property """
         return self.__pa
 
     @pa.setter
@@ -118,7 +130,7 @@ class Engine():
 
     @property
     def pe(self):
-        """ pe [Pa], exit pressure proprety """
+        """ pe, exit pressure proprety """
         return self.__pe
 
     @pe.setter
@@ -127,7 +139,7 @@ class Engine():
 
     @property
     def MR(self):
-        """" MR [1], mixture ratio property """
+        """" MR, mixture ratio property """
         return self.__MR
 
     @MR.setter
@@ -136,7 +148,7 @@ class Engine():
 
     @property
     def MW(self):
-        """ MW [1], gas molecular weight of propellants """
+        """ MW, gas molecular weight of propellants """
         return self.__MW
 
     @MW.setter
@@ -145,7 +157,7 @@ class Engine():
 
     @property
     def gamma(self):
-        """ gamma [1], ratio of coefficients of heats """
+        """ gamma, ratio of coefficients of heats """
         return self.__gamma
 
     @gamma.setter
@@ -165,7 +177,7 @@ class Engine():
 
     @property
     def Rspecific(self):
-        """ Rspecific [kg/kmol-K], specific gas constant """
+        """ Rspecific, specific gas constant """
         return self.Rbar/self.MW
 
     @Rspecific.setter
@@ -174,7 +186,7 @@ class Engine():
 
     @property
     def cstar(self):
-        """ cstar, characteristic velocity [m/s]
+        """ cstar, characteristic velocity
             get_cstar() calculates and returns the value of cstar """
         gamma = self.gamma
         Rspecific = self.Rspecific
@@ -236,14 +248,14 @@ class Engine():
 
     @property
     def Isp_vac(self):
-        """ Isp_vac, Specific Impulse in vacuum
+        """ Isp_vac, Specific Impulse in vacuum [s]
         """
         thrust = self.thrust + (self.pe-0)*self.Ae
         return thrust/(self.mdot*self.g0)
 
     @property
     def mdot(self):
-        """ mdot, total mass flow rate [kg/s]
+        """ mdot, total mass flow rate
 
         typically,
             get_mdot(Isp=Isp, thrust=thrust, g0=g0)"""
@@ -254,14 +266,14 @@ class Engine():
 
     @property
     def mdot_ox(self):
-        """ mdot_ox, mass flow rate of oxidizer [kg/s] """
+        """ mdot_ox, mass flow rate of oxidizer"""
         MR = self.MR
         mdot = self.mdot
         return MR/(MR+1)*mdot
 
     @property
     def mdot_f(self):
-        """ mdot_f, mass flow rate of fuel [kg/s] """
+        """ mdot_f, mass flow rate of fuel"""
         MR = self.MR
         mdot = self.mdot
         return 1/(MR+1)*mdot
@@ -308,8 +320,7 @@ class Engine():
     def Ma_exit(self):
         """ Calculate and set the mach number at nozzle exit
 
-        derived from pressure ratio equation
-        """
+        derived from pressure ratio equation"""
         # ue = self.ue
         # asound = self.asound
         # self.__Ma_exit  = ue/asound
@@ -480,9 +491,42 @@ class Engine():
         return (Re-Rt)/np.tan(np.deg2rad(angle))*bell_length
 
     # Misc Tasks
-    def generate_outputs():
-        pass
+    def generate_output(self):
+        """Creates output excel file with engine performance and geometric parameters"""
+        outputName = 'engine_{name}_{now}.xlsx'.format(name=self.name, \
+                                                       now=datetime.utcnow().strftime('%Y_%m_%d'))
+        workbook = xlsxwriter.Workbook(outputName)
+        performanceWorksheet = workbook.add_worksheet('performance')
+        geometryWorksheet = workbook.add_worksheet('geometry')
 
+        performanceWorksheet.write('B2', 'Engine Name:')
+        if self.name != False:
+            performanceWorksheet.write('C2', self.name)
+
+        # generate header
+        performanceWorksheet.write('B3', 'Thrust')
+        performanceWorksheet.write('B4', 'Thrust Vac')
+        performanceWorksheet.write('B5', 'Isp')
+        performanceWorksheet.write('B6', 'Isp Vac')
+        performanceWorksheet.write('B7', 'mass flow rate')
+        performanceWorksheet.write('B8', 'Mixture Ratio')
+
+        # add data
+        performanceWorksheet.write('C3', self.thrust)
+        performanceWorksheet.write('C4', self.thrust_vac)
+        performanceWorksheet.write('C5', self.Isp)
+        performanceWorksheet.write('C6', self.Isp_vac)
+        performanceWorksheet.write('C7', self.mdot)
+        performanceWorksheet.write('C8', self.MR)
+
+        # units
+        performanceWorksheet.write('D3', 'N')
+        performanceWorksheet.write('D4', 'N')
+        performanceWorksheet.write('D5', 's')
+        performanceWorksheet.write('D6', 's')
+        performanceWorksheet.write('D7', 'kg/s')
+        performanceWorksheet.write('D8', '1')
+        print('Output Generated!')
 
 if __name__ == "__main__":
     pass

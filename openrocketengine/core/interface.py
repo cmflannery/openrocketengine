@@ -7,6 +7,7 @@ from openrocketengine.core.rocket import Engine
 
 
 standard_types = {
+        'name': str,
         'units': str,
         'thrust': float,
         'Tc': float,
@@ -14,11 +15,21 @@ standard_types = {
         'pe': float,
         'MR': float,
         'MW': float,
-        'gamma': float
+        'gamma': float,
+        'lstar': float,
+        'area_ratio': float
         }
 
 
 def read_config(fname):
+    """Parse configuration file and return a dictionary with the key value pairs
+
+    Parameters:
+        fname (str): file name, or path to file, of configuration file
+
+    Returns:
+        dict: contains all parameters and values parsed and typecast
+    """
     assert os.path.isfile(fname), 'Error: {} does not exist in the working directory'.format(fname)
     with open(fname, 'r') as f:
         config = f.read()
@@ -46,13 +57,13 @@ def read_config(fname):
         if std_type != type(configuration[key]):
             configuration[key] = std_type(configuration[key])
 
-    print(configuration)
     return configuration
 
 
 def main(fname):
     configuration = read_config(fname)
     engine = Engine(**configuration)
+    engine.generate_output()
 
 
 if __name__ == '__main__':
