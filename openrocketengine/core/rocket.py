@@ -38,7 +38,8 @@ class Engine():
         gamma (float): ratio of coefficients of heat
     """
     def __init__(self, thrust=None, Tc=None, pc=None, pe=None, pa=None, MR=None, MW=None,
-                 gamma=None):
+                 gamma=None, units=None):
+        self.units = units
         self.thrust = thrust
         self.Tc = Tc
         self.pc = pc
