@@ -1,25 +1,19 @@
-#! -*- coding: utf-8 -*-
+#!/usr/bin/env python
+"""This module is part of Open Rocket Engine's engine development program. OpenRocketEngine
+provides a command line interface for the design and development of rocket engine thrust
+chambers."""
 from __future__ import division, absolute_import, print_function
-"""enginemanager.py
-
-This module is part of Open Rocket Engine's engine development program. OpenRocketEngine provides
-a command line interface for the design and development of rocket engine thrust chambers."""
 import sys
 import os
-import argparse
 import subprocess
 import numpy as np
 import pandas as pd
 
 
 __author__ = "Cameron Flannery"
-__copyright__ = "Copyright 2017"
+__copyright__ = "Copyright 2018"
 __license__ = "MIT"
-__version__ = "0.0.3"
-__status__ = "alpha"
 
-
-debug = True
 
 # engine class retrieves and stores all outputs for each run
 class Engine():
@@ -38,7 +32,8 @@ class Engine():
         gamma (float): ratio of coefficients of heat
     """
     def __init__(self, thrust=None, Tc=None, pc=None, pe=None, pa=None, MR=None, MW=None,
-                 gamma=None):
+                 gamma=None, units=None):
+        self.units = units
         self.thrust = thrust
         self.Tc = Tc
         self.pc = pc
@@ -200,7 +195,8 @@ class Engine():
             print('Include all required parameters:', required)
             raise
 
-        self.__cstar = np.sqrt(gamma*Rspecific*Tc)/(gamma*np.sqrt((2/(gamma+1))**((gamma+1)/(gamma-1))))
+        self.__cstar = \
+                np.sqrt(gamma*Rspecific*Tc)/(gamma*np.sqrt((2/(gamma+1))**((gamma+1)/(gamma-1))))
 
     @property
     def Cf(self):
@@ -208,7 +204,9 @@ class Engine():
         gamma = self.gamma
         pc = self.pc
         pe = self.pe
-        return np.sqrt((2*gamma**2/(gamma-1))*(2/(gamma+1))**((gamma+1)/(gamma-1))*(1-(pe/pc)**((gamma-1)/gamma)))
+        return np.sqrt((2*gamma**2/(gamma-1))* \
+                       (2/(gamma+1))**((gamma+1)/(gamma-1))* \
+                       (1-(pe/pc)**((gamma-1)/gamma)))
 
     @Cf.setter
     def Cf(self, value):
@@ -405,7 +403,8 @@ class Engine():
         else:
             self.__contraction_area_ratio = self.__Ac/self.__Ae
             if self.__contraction_area_ratio < 3:
-                print("Warning: A minimum area contraction ratio of 3 is recommended. Use the Ae or contraction area ratio setter to change the value of Ac")
+                print("Warning: A minimum area contraction ratio of 3 is recommended. \
+                      Use the Ae or contraction area ratio setter to change the value of Ac")
             return self.__contraction_area_ratio
 
     @contraction_area_ratio.setter
@@ -480,7 +479,8 @@ class Engine():
         angle = 15  # degrees
         return (Re-Rt)/np.tan(np.deg2rad(angle))*bell_length
 
-    def initUI(self):
+    # Misc Tasks
+    def generate_outputs():
         pass
 
 
