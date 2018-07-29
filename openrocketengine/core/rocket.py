@@ -1,62 +1,51 @@
+#! -*- coding: utf-8 -*-
 from __future__ import division, absolute_import, print_function
-""" enginemanager """
+"""enginemanager.py
+
+This module is part of Open Rocket Engine's engine development program. OpenRocketEngine provides
+a command line interface for the design and development of rocket engine thrust chambers."""
 import sys
 import os
+import argparse
 import subprocess
 import numpy as np
 import pandas as pd
 
-try:
-    import units
-except ModuleNotFoundError:
-    print('OpenRocketEngineError: units module not found. Units support not available.')
 
-import writer  # write results to an excel file
-
-# from PyQt5.QtWidgets import QWidget, QPushButton, QApplication
-# from PyQt5.QtCore import QCoreApplication
 __author__ = "Cameron Flannery"
 __copyright__ = "Copyright 2017"
 __license__ = "MIT"
 __version__ = "0.0.3"
 __status__ = "alpha"
 
+
+debug = True
+
 # engine class retrieves and stores all outputs for each run
 class Engine():
-    """Create and optimize liquid engine design"""
-    def __init__(self, **kwargs):
-        """ default parameters required for initialization 
+    """Designs a rocket engine based on isentropic flow equations.
 
-        thrust := sea-level thrust
-        Tc := chamber temperature
-        pc := chamber pressure
-        pe := exit pressure
-        pa := ambient pressure
-        MR := mass ratio
-        MW := molecular weight
-        gamma := ratio of coefficients of heats """
+    Initialization requirements are listed in the parameters below.
 
-        defaultParameters = ['thrust', 'Tc', 'pc', 'pe', 'pa', 'MR', 'MW', 'gamma']
-        for parameter in defaultParameters:
-            if parameter not in kwargs:
-                print(parameter, 'needs to be included in object initialization')
-        try:
-            self.thrust = kwargs['thrust']
-            self.Tc = kwargs['Tc']
-            self.pc = kwargs['pc']
-            self.pa = kwargs['pa']
-            self.pe = kwargs['pe']
-            self.MR = kwargs['MR']
-            self.MW = kwargs['MW']
-            self.gamma = kwargs['gamma']
-        except KeyError:
-            print('Include all required parameters:', defaultParameters)
-            raise
-
-        if 'name' in kwargs:
-            self.__name = kwargs['name']
-        else:
-            self.__name = False
+    Parameters:
+        thrust (float): [N] sea-level thrust
+        Tc (float): [K] chamber temperature
+        pc (float): [MPa] chamber pressure
+        pe (float): [MPa] exit pressure
+        pa (float): [MPa] ambient pressure
+        MR (float): [1] mass ratio
+        MW (float): [kmol/kg] molecular weight
+        gamma (float): ratio of coefficients of heat
+    """
+    def __init__(self, thrust=None, Tc=None, pc=None, pe=None, pa=None, MR=None, MW=None,
+                 gamma=None):
+        self.thrust = thrust
+        self.Tc = Tc
+        self.pc = pc
+        self.pe = pe
+        self.pa = pa
+        self.MR = MR
+        self.MW = MW
 
         # set constants
         self.__Rbar = 8314  # [kJ/Kmol-K]
@@ -67,44 +56,11 @@ class Engine():
         self.contraction_area_ratio = 5  # nondimensional
         self.bell_length = 0.8
 
-    def write_results(self):
-        writer.generate(self)
-
-    def output_geometry(self):
-        indecies = ['Ac', 'At', 'Ae', 'Rc', 'Rt', 'Re', 'R1', 'Rn', 'Vc', 'lstar', 'lcyl', 'beta', 'ln']
-        values = [
-            self.Ac,
-            self.At,
-            self.Ae,
-            self.Rc,
-            self.Rt,
-            self.Re,
-            self.R1,
-            self.Rn,
-            self.Vc,
-            self.lstar,
-            self.lcyl,
-            self.contraction_angle,
-            self.ln
-        ]
-        self.__output_geometry = pd.Series(values,index=indecies)
-        return self.__output_geometry
-
-    def output_performance(self):
-        indecies = ['Isp', 'Isp_vac', 'ue']
-        values = [
-            self.Isp,
-            self.Isp_vac,
-            self.ue
-        ]
-        self.__output_performance = pd.Series(values,index=indecies)
-        return self.__output_performance
-
     @property
     def name(self):
         """ name, engine name: optional parameter """
         return self.__name
-    
+
     @name.setter
     def name(self,value):
         """ set name """
@@ -368,13 +324,13 @@ class Engine():
 ################################################################################
 #**************************** Chamber Calculations *****************************
 ################################################################################
-    
-    # Notes: 
+
+    # Notes:
     # Determine the area contraction ratio based on the injection velocities and
     # compressible flow equations in a converging section.
     # i.e. what convergence is necessary to achieve mach 1 in the throat?
     # This is codable.. Add some margin for major losses
-    
+
     @property
     def Ac(self):
         """ Ac returns the chamber area """
@@ -527,26 +483,6 @@ class Engine():
     def initUI(self):
         pass
 
-def main():
-    debugging = True
-    try:
-        subprocess.call('clear')
-    except OSError:
-        subprocess.call('cls', shell=True)
-    print("\n\nLets build a rocket engine!\n")
-    # generate_gui()
-    debug()
-
-def debug():
-    rbf = Engine(name='Remove Before Flight',thrust=1000, Tc=3300, pc=300, pe=12.3, pa=12.3, MR=2.77, MW=19.8, gamma=1.207)
-    rbf.lstar = 50
-    rbf.contraction_area_ratio = 5.5
-    rbf.write_results()
-    print(rbf.output_geometry())
-    print(rbf.output_performance())
 
 if __name__ == "__main__":
-    try:
-        main()
-    except KeyboardInterrupt:
-        print("\n\nKeyboardInterrupt: exiting...\n")
+    pass
