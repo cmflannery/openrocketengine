@@ -66,6 +66,11 @@ def main(fname):
     engine.generate_output()
 
 
+def entry():
+    """Command line entry point"""
+    fire.Fire(main)
+
+
 if __name__ == '__main__':
     fire.Fire(main)
 

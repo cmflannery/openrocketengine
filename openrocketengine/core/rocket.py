@@ -17,6 +17,8 @@ __copyright__ = "Copyright 2018"
 __license__ = "MIT"
 
 
+np.warnings.filterwarnings('ignore')
+
 # engine class retrieves and stores all outputs for each run
 class Engine():
     """Designs a rocket engine based on isentropic flow equations.
@@ -87,18 +89,9 @@ class Engine():
         return self.__g0
 
     @property
-    def thrust(self):
-        """ Thrust at sea-level"""
-        return self.__thrust
-
-    @thrust.setter
-    def thrust(self, value):
-        self.__thrust = value
-
-    @property
     def thrust_vac(self):
         """ Thrust in vacuum """
-        self.__thrust_vac = self.__thrust + self.pe*self.Ae
+        self.__thrust_vac = self.thrust + self.pe*self.Ae
         return self.__thrust_vac
 
     @property

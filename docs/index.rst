@@ -10,7 +10,7 @@ Welcome to openrocketengine's documentation!
    :maxdepth: 2
    :caption: Contents:
 
-   basic_usage
+   getting_started
 
 .. toctree::
    :maxdepth: 2
