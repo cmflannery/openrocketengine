@@ -35,7 +35,7 @@ def read_config(fname):
         config = f.read()
 
     statements = [s for s in config.split('\n') if s != '']  # ignore empty lines
-    parsed_config = [s for s in statements if s[0] != "#"]  # ignore all comment lines
+    parsed_config = [s for s in statements if s[0] != '#']  # ignore all comment lines
     configuration = {}
     # Read the configuration file and store all key-value pairs in a dictionary
     for thing in parsed_config:
