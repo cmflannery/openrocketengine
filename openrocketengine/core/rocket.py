@@ -22,7 +22,7 @@ np.warnings.filterwarnings('ignore')
 SI_units = {
         'thrust': 'N',
         'mass': 'kg',
-        'Isp': 's',
+        'isp': 's',
         'mdot': 'kg/s',
         'unitless': '1',
         'length': 'm',
@@ -34,7 +34,7 @@ SI_units = {
 imperial_units = {
         'thrust': 'lbf',
         'mass': 'lbm',
-        'Isp': 's',
+        'isp': 's',
         'mdot': 'lbm/s',
         'unitless': '1',
         'length': 'ft',
@@ -302,15 +302,7 @@ class Engine():
 
         Derived from isentropic flow-critical temperature ratio """
 
-        # NEEDS WORK
-
-        if 'Tc' in kwargs:
-            Tc = kwargs['Tc']
-            self.__Tt = Tc
-        else:
-            Tc = self.Tc
-            self.__Tt = 0
-        return self.__Tt
+        return self.Tc/(1 + (self.gamma-1)/2)
 
     @property
     def pt(self):
@@ -542,12 +534,12 @@ class Engine():
         performanceWorksheet.write('B8', self.MR)
 
         # units
-        performanceWorksheet.write('C3', 'N')
-        performanceWorksheet.write('C4', 'N')
-        performanceWorksheet.write('C5', 's')
-        performanceWorksheet.write('C6', 's')
-        performanceWorksheet.write('C7', 'kg/s')
-        performanceWorksheet.write('C8', '1')
+        performanceWorksheet.write('C3', Units[self.units]['thrust'])
+        performanceWorksheet.write('C4', Units[self.units]['thrust'])
+        performanceWorksheet.write('C5', Units[self.units]['isp'])
+        performanceWorksheet.write('C6', Units[self.units]['isp'])
+        performanceWorksheet.write('C7', Units[self.units]['mdot'])
+        performanceWorksheet.write('C8', Units[self.units]['unitless'])
 
 
     def _write_geometry(self, geometryWorksheet):
@@ -589,21 +581,19 @@ class Engine():
         geometryWorksheet.write('B16', self.ln)
 
         # units
-        geometryWorksheet.write('B3', Units[self.units]['area'])
-        geometryWorksheet.write('B4', Units[self.units]['length'])
-        geometryWorksheet.write('B5', Units[self.units]['area'])
-        geometryWorksheet.write('B6', Units[self.units]['length'])
-        geometryWorksheet.write('B7', Units[self.units]['area'])
-        geometryWorksheet.write('B8', Units[self.units]['length'])
-        geometryWorksheet.write('B9', Units[self.units]['length'])
-        geometryWorksheet.write('B10', Units[self.units]['unitless'])
-        geometryWorksheet.write('B11', Units[self.units]['unitless'])
-        geometryWorksheet.write('B12', Units[self.units]['angle'])
-        geometryWorksheet.write('B13', Units[self.units]['length'])
-        geometryWorksheet.write('B14', Units[self.units]['volume'])
-        geometryWorksheet.write('B15', Units[self.units]['length'])
-        geometryWorksheet.write('B16', Units[self.units]['length'])
+        geometryWorksheet.write('C3', Units[self.units]['area'])
+        geometryWorksheet.write('C4', Units[self.units]['length'])
+        geometryWorksheet.write('C5', Units[self.units]['area'])
+        geometryWorksheet.write('C6', Units[self.units]['length'])
+        geometryWorksheet.write('C7', Units[self.units]['area'])
+        geometryWorksheet.write('C8', Units[self.units]['length'])
+        geometryWorksheet.write('C9', Units[self.units]['length'])
+        geometryWorksheet.write('C10', Units[self.units]['unitless'])
+        geometryWorksheet.write('C11', Units[self.units]['unitless'])
+        geometryWorksheet.write('C12', Units[self.units]['angle'])
+        geometryWorksheet.write('C13', Units[self.units]['length'])
+        geometryWorksheet.write('C14', Units[self.units]['volume'])
+        geometryWorksheet.write('C15', Units[self.units]['length'])
+        geometryWorksheet.write('C16', Units[self.units]['length'])
 
 
-if __name__ == "__main__":
-    pass

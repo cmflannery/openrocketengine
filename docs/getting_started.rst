@@ -24,7 +24,7 @@ openrocketengine takes a configuration file as the only input, specifying the en
 and geometric design choices. Right now, there is only one possible combination of parameters that all have to be included in
 the config file. In the future, there may be additional options to automatically retrieve propellant properties from CEA.
 
-Config files are usually named with the engine name and the revision number with a '.cfg' suffix. I.e. RBF-rev01.cfg
+Config files are usually named with the engine name and the revision number with a '.cfg' suffix. I.e. RBF-rev01.cfg.
 
 A typical configuration file looks like the following::
 
@@ -51,4 +51,15 @@ Running the program
 openrocketengine can be fun from the command line with the command `rocket`::
 
     $ rocket RBF-rev01.cfg
+
+Outputs
+~~~~~~~
+openrocketengine generates an output excel workbook with two sheets; one geometric parameters, and one for performance parameters.
+
+
+Recommended Workflow
+~~~~~~~~~~~~~~~~~~~~
+Create a directory for your enigne design files and run rocket from there. I.e.::
+
+    ~/Documents/marginal-stability/engine/design$ rocket tsu-01.cfg
 
