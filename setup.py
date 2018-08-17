@@ -1,5 +1,4 @@
 """A setuptools based setup module."""
-
 # Always prefer setuptools over distutils
 from setuptools import setup, find_packages
 from os import path
@@ -8,6 +7,9 @@ from os import path
 # and accepts an argument to specify the text encoding
 # Python 3 only projects can skip this import
 from io import open
+
+with open('requirements.txt') as f:
+    requirements = f.read().splitlines()
 
 here = path.abspath(path.dirname(__file__))
 
@@ -38,7 +40,7 @@ setup(
     # For a discussion on single-sourcing the version across setup.py and the
     # project code, see
     # https://packaging.python.org/en/latest/single_source_version.html
-    version='0.0.0',  # Required
+    version='0.0.3',  # Required
 
     # This is a one-line description or tagline of what your project does. This
     # corresponds to the "Summary" metadata field:
@@ -75,11 +77,11 @@ setup(
 
     # This should be your name or the name of the organization which owns the
     # project.
-    author='cmflannery',  # Optional
+    author='cameron',  # Optional
 
     # This should be a valid email address corresponding to the author listed
     # above.
-    author_email='cmflannery@ucsd.edu',  # Optional
+    author_email='',  # Optional
 
     # Classifiers help users find your project by categorizing it.
     #
@@ -129,7 +131,7 @@ setup(
     #
     # For an analysis of "install_requires" vs pip's requirements files see:
     # https://packaging.python.org/en/latest/requirements.html
-#     install_requires=[''],  # Optional
+     install_requires=[requirements],  # Optional
 
     # List additional groups of dependencies here (e.g. development
     # dependencies). Users will be able to install these using the "extras"
@@ -183,9 +185,5 @@ setup(
     # maintainers, and where to support the project financially. The key is
     # what's used to render the link text on PyPI.
     project_urls={  # Optional
-        'Bug Reports': 'https://github.com/pypa/sampleproject/issues',
-        'Funding': 'https://donate.pypi.org',
-        'Say Thanks!': 'http://saythanks.io/to/example',
-        'Source': 'https://github.com/pypa/sampleproject/',
     },
 )

@@ -225,7 +225,8 @@ class Engine():
             print('Include all required parameters:', required)
             raise
 
-        self.__Cf = np.sqrt((2*gamma**2/(gamma-1))*(2/(gamma+1))**((gamma+1)/(gamma-1))*(1-(pe/pc)**((gamma-1)/gamma)))
+        self.__Cf = np.sqrt((2*gamma**2/(gamma-1))*(2/(gamma+1))**((gamma+1)/(gamma-1)) * \
+                    (1-(pe/pc)**((gamma-1)/gamma)))
 
     @property
     def Isp(self):
