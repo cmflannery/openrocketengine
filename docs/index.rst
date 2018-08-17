@@ -28,10 +28,12 @@ Installation
 OpenRocketEngine only supports python 3.5 and above. Functionality with other python releases is
 untested and not guaranteed. Basic usage::
 
-    $ openrocketengine config_file.cfg
+    $ rocket config_file.cfg
 
 Basic Usage
 -----------
+For basic usage, refer to `getting_started`_.
+
 Note: checkout "Nomenclature" below if you are unsure about any of the variable used above
 
 These input parameters are typical of what is used in industry design of rocket engines. If you are
@@ -41,18 +43,18 @@ unfamiliar with this process, I recommend reading "Rocket Propulsion Elements" f
 To get these input parameters, you have essentially three options:
 (I've listed them in order of my preference)
 
-#. NASA CEA
+1. NASA CEA
 
  #. free, but difficult to use
  #. generally trust worthy data
 
-#. Braeuing (http://www.braeunig.us/space/comb.htm)
+2. Braeuing (http://www.braeunig.us/space/comb.htm)
 
  #. super simple and fast
  #. data is based on STANJAN (older version of CEA)
  #. no access to actual data files, so plot interpretation can result in signifant errors
 
-#. Testing
+3. Testing
 
  #. challenging, but fun
  #. expensive and not really necessary given the resources above

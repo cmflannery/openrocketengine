@@ -19,6 +19,31 @@ __license__ = "MIT"
 
 np.warnings.filterwarnings('ignore')
 
+SI_units = {
+        'thrust': 'N',
+        'mass': 'kg',
+        'isp': 's',
+        'mdot': 'kg/s',
+        'unitless': '1',
+        'length': 'm',
+        'area': 'm^2',
+        'volume': 'm^3',
+        'angle': 'degrees'
+        }
+
+imperial_units = {
+        'thrust': 'lbf',
+        'mass': 'lbm',
+        'isp': 's',
+        'mdot': 'lbm/s',
+        'unitless': '1',
+        'length': 'ft',
+        'area': 'ft^2',
+        'volume': 'ft^3',
+        'angle': 'degrees'
+        }
+Units = dict(SI=SI_units, Imperial=imperial_units)
+
 # engine class retrieves and stores all outputs for each run
 class Engine():
     """Designs a rocket engine based on isentropic flow equations.
@@ -278,15 +303,7 @@ class Engine():
 
         Derived from isentropic flow-critical temperature ratio """
 
-        # NEEDS WORK
-
-        if 'Tc' in kwargs:
-            Tc = kwargs['Tc']
-            self.__Tt = Tc
-        else:
-            Tc = self.Tc
-            self.__Tt = 0
-        return self.__Tt
+        return self.Tc/(1 + (self.gamma-1)/2)
 
     @property
     def pt(self):
@@ -397,7 +414,7 @@ class Engine():
     @property
     def expansion_area_ratio(self):
         """ returns the expansion area ratio, Aexit/Athroat """
-        return self.Ae/At
+        return self.Ae/self.At
 
     @property
     def contraction_area_ratio(self):
@@ -426,7 +443,6 @@ class Engine():
         At = self.At
         gamma = self.gamma
 
-        # return At/Ma*((1 + ((gamma-1)/2)*Ma**2)/(1 + ((gamma-1)/2)))**((gamma+1)/(2*(gamma-1)))
         return At/Ma*((1 + ((gamma-1)/2)*Ma**2)/((1 + gamma)/2))**((gamma+1)/(2*(gamma-1)))
 
     @property
@@ -481,46 +497,104 @@ class Engine():
         Re = self.Re
         Rt = self.Rt
         bell_length = self.bell_length
-        angle = 15  # degrees
+        angle = 15.  # degrees
         return (Re-Rt)/np.tan(np.deg2rad(angle))*bell_length
 
     # Misc Tasks
     def generate_output(self):
         """Creates output excel file with engine performance and geometric parameters"""
-        outputName = 'engine_{name}_{now}.xlsx'.format(name=self.name, \
+        outputName = 'rocket_{name}_{now}.xlsx'.format(name=self.name, \
                                                        now=datetime.utcnow().strftime('%Y_%m_%d'))
         workbook = xlsxwriter.Workbook(outputName)
-        performanceWorksheet = workbook.add_worksheet('performance')
         geometryWorksheet = workbook.add_worksheet('geometry')
+        performanceWorksheet = workbook.add_worksheet('performance')
 
-        performanceWorksheet.write('B2', 'Engine Name:')
+        self._write_performance(performanceWorksheet)
+        self._write_geometry(geometryWorksheet)
+
+    def _write_performance(self, performanceWorksheet):
+        """Write performance values to worksheet"""
+        performanceWorksheet.write('A1', 'Engine Name:')
         if self.name != False:
-            performanceWorksheet.write('C2', self.name)
+            performanceWorksheet.write('B1', self.name)
 
         # generate header
-        performanceWorksheet.write('B3', 'Thrust')
-        performanceWorksheet.write('B4', 'Thrust Vac')
-        performanceWorksheet.write('B5', 'Isp')
-        performanceWorksheet.write('B6', 'Isp Vac')
-        performanceWorksheet.write('B7', 'mass flow rate')
-        performanceWorksheet.write('B8', 'Mixture Ratio')
+        performanceWorksheet.write('A3', 'Thrust')
+        performanceWorksheet.write('A4', 'Thrust Vac')
+        performanceWorksheet.write('A5', 'Isp')
+        performanceWorksheet.write('A6', 'Isp Vac')
+        performanceWorksheet.write('A7', 'mass flow rate')
+        performanceWorksheet.write('A8', 'Mixture Ratio')
 
         # add data
-        performanceWorksheet.write('C3', self.thrust)
-        performanceWorksheet.write('C4', self.thrust_vac)
-        performanceWorksheet.write('C5', self.Isp)
-        performanceWorksheet.write('C6', self.Isp_vac)
-        performanceWorksheet.write('C7', self.mdot)
-        performanceWorksheet.write('C8', self.MR)
+        performanceWorksheet.write('B3', self.thrust)
+        performanceWorksheet.write('B4', self.thrust_vac)
+        performanceWorksheet.write('B5', self.Isp)
+        performanceWorksheet.write('B6', self.Isp_vac)
+        performanceWorksheet.write('B7', self.mdot)
+        performanceWorksheet.write('B8', self.MR)
 
         # units
-        performanceWorksheet.write('D3', 'N')
-        performanceWorksheet.write('D4', 'N')
-        performanceWorksheet.write('D5', 's')
-        performanceWorksheet.write('D6', 's')
-        performanceWorksheet.write('D7', 'kg/s')
-        performanceWorksheet.write('D8', '1')
-        print('Output Generated!')
+        performanceWorksheet.write('C3', Units[self.units]['thrust'])
+        performanceWorksheet.write('C4', Units[self.units]['thrust'])
+        performanceWorksheet.write('C5', Units[self.units]['isp'])
+        performanceWorksheet.write('C6', Units[self.units]['isp'])
+        performanceWorksheet.write('C7', Units[self.units]['mdot'])
+        performanceWorksheet.write('C8', Units[self.units]['unitless'])
 
-if __name__ == "__main__":
-    pass
+
+    def _write_geometry(self, geometryWorksheet):
+        """Write geometry values to worksheet"""
+        geometryWorksheet.write('A1', 'Engine Name:')
+        if self.name != False:
+            geometryWorksheet.write('B1', self.name)
+
+        # generate header
+        geometryWorksheet.write('A3', 'Ac, Chamber Area')
+        geometryWorksheet.write('A4', 'Rc, Chamber Radius')
+        geometryWorksheet.write('A5', 'At, Throat Area')
+        geometryWorksheet.write('A6', 'Rt, Throat Radius')
+        geometryWorksheet.write('A7', 'Ae, Exit Area')
+        geometryWorksheet.write('A8', 'Re, Exit Radius')
+        geometryWorksheet.write('A9', 'Rn, radius leaving thoat')
+        geometryWorksheet.write('A10', 'Ea, expansion area ratio (Ae/At)')
+        geometryWorksheet.write('A11', 'Ec, contraction area ratio (Ac/Ae)')
+        geometryWorksheet.write('A12', 'Thetac, contraction angle')
+        geometryWorksheet.write('A13', 'lstar')
+        geometryWorksheet.write('A14', 'Vc, chamber volume')
+        geometryWorksheet.write('A15', 'lcyl, cylindrical section of combustion chamber')
+        geometryWorksheet.write('A16', 'length of nozzle')
+
+        # add data
+        geometryWorksheet.write('B3', self.Ac)
+        geometryWorksheet.write('B4', self.Rc)
+        geometryWorksheet.write('B5', self.At)
+        geometryWorksheet.write('B6', self.Rt)
+        geometryWorksheet.write('B7', self.Ae)
+        geometryWorksheet.write('B8', self.Re)
+        geometryWorksheet.write('B9', self.Rn)
+        geometryWorksheet.write('B10', self.expansion_area_ratio)
+        geometryWorksheet.write('B11', self.contraction_area_ratio)
+        geometryWorksheet.write('B12', self.contraction_angle)
+        geometryWorksheet.write('B13', self.lstar)
+        geometryWorksheet.write('B14', self.Vc)
+        geometryWorksheet.write('B15', self.lcyl)
+        geometryWorksheet.write('B16', self.ln)
+
+        # units
+        geometryWorksheet.write('C3', Units[self.units]['area'])
+        geometryWorksheet.write('C4', Units[self.units]['length'])
+        geometryWorksheet.write('C5', Units[self.units]['area'])
+        geometryWorksheet.write('C6', Units[self.units]['length'])
+        geometryWorksheet.write('C7', Units[self.units]['area'])
+        geometryWorksheet.write('C8', Units[self.units]['length'])
+        geometryWorksheet.write('C9', Units[self.units]['length'])
+        geometryWorksheet.write('C10', Units[self.units]['unitless'])
+        geometryWorksheet.write('C11', Units[self.units]['unitless'])
+        geometryWorksheet.write('C12', Units[self.units]['angle'])
+        geometryWorksheet.write('C13', Units[self.units]['length'])
+        geometryWorksheet.write('C14', Units[self.units]['volume'])
+        geometryWorksheet.write('C15', Units[self.units]['length'])
+        geometryWorksheet.write('C16', Units[self.units]['length'])
+
+
