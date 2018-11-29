@@ -1,22 +1,31 @@
 Getting Started
 ===============
 
-This document will show you how to start using openrocketengine.
-
-Installation
-------------
-
-Installing with pip::
-
-    $ pip3 install openrocketengine
-
-Building from source::
-
-    $ python install -r requirements.txt
-    $ python setup.py install
-
 Designing a Rocket Engine
 -------------------------
+
+What does OpenRocketEngine Do?
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+OpenRocketEngine will perform some basic calculations for rocket thrust chamber designs. Additionally,
+it will be able to perform comparisions of different configurations.
+
+This code was originally created with the intention of automating vehicle sizing trade studies.
+
+Design Inputs
+~~~~~~~~~~~~~
+
+.. note:: The physics behind the parameters mentioned here are not discussed. For a discussion on the
+          physics behind the code refer to literature or gbok-propulsion_.
+
+The inputs are classified as either required or optional.
+
+* :code:`name`: [str] The name of the engine; used for naming output files.
+* :code:`units`: [str] (SI or Imperial)
+* :code:`thrust`: [float] Engine thrust (duh)
+* :code:`Tc`: [float] Chamber Temperature
+* :code:`pc`: [float] Chamber Pressure
+* :code:`pe`: [float] Exit Pressure
+* :code:`MR`: [float] Mixture Ratio :math:`\frac{\dot{m}_{oxidizer}}{\dot{m}_{fuel}}`
 
 Configuration Files
 ~~~~~~~~~~~~~~~~~~~
@@ -63,3 +72,4 @@ Create a directory for your enigne design files and run rocket from there. I.e.:
 
     ~/Documents/marginal-stability/engine/design$ rocket tsu-01.cfg
 
+.. _gbok-propulsion: https://gbok.readthedocs.io/en/latest/rockets.html

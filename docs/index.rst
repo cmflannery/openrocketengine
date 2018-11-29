@@ -15,16 +15,17 @@ Welcome to openrocketengine's documentation!
 .. toctree::
    :maxdepth: 2
    :caption: API Reference:
-   
-   rocket
 
 Overview
 --------
 
-OpenRocketEngine performs the calculations for simple analysis and design of rocket engines.
+OpenRocketEngine performs the calculations for simple analysis and design of rocket engines. For a
+general overview of the philosophy behind designing rocket engines, refer to the `rocket propulsion
+section`_ of General Body of Knowledge (GBOK).
 
 Installation
 ------------
+
 OpenRocketEngine only supports python 3.5 and above. Functionality with other python releases is
 untested and not guaranteed. Basic usage::
 
@@ -32,6 +33,7 @@ untested and not guaranteed. Basic usage::
 
 Basic Usage
 -----------
+
 For basic usage, refer to `getting_started`_.
 
 Note: checkout "Nomenclature" below if you are unsure about any of the variable used above
@@ -41,7 +43,6 @@ unfamiliar with this process, I recommend reading "Rocket Propulsion Elements" f
 "Mechanics and Thermodynamics of Propulsion" for a more rigorous mathematical overview.
 
 To get these input parameters, you have essentially three options:
-(I've listed them in order of my preference)
 
 1. NASA CEA
 
@@ -68,3 +69,7 @@ pa : ambient pressure
 MR : propellant mixture ratio
 MW : propellant gas molecular weight
 gamma : ratio of coefficient of heats
+
+
+.. _`rocket propulsion section`: https://gbok.readthedocs.io/en/latest/rockets.html
+.. 
