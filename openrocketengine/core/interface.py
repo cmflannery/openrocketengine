@@ -63,6 +63,7 @@ def read_config(fname):
 def main(fname):
     configuration = read_config(fname)
     engine = Engine(**configuration)
+    print(engine.ue)
     engine.generate_output()
 
 

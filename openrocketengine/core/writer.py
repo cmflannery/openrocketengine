@@ -32,6 +32,7 @@ def generate(engine):
     performanceWorksheet.write('C6', engine.Isp_vac)
     performanceWorksheet.write('C7', engine.mdot)
     performanceWorksheet.write('C8', engine.MR)
+    performanceWorksheet.write('C9', engine.ue)
 
     # units
     performanceWorksheet.write('D3', 'N')
@@ -40,4 +41,6 @@ def generate(engine):
     performanceWorksheet.write('D6', 's')
     performanceWorksheet.write('D7', 'kg/s')
     performanceWorksheet.write('D8', '1')
+    performanceWorksheet.write('D9', 'm/s')
+
     print('Output Generated!')

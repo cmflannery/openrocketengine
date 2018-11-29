@@ -62,7 +62,8 @@ class Engine():
         gamma (float): ratio of coefficients of heat
     """
     def __init__(self, thrust=None, Tc=None, pc=None, pe=None, pa=None, MR=None, MW=None,
-                 gamma=None, lstar=None, area_ratio=None, units=None, name=None):
+                 gamma=None, lstar=None, area_ratio=None, units=None, contraction_angle=None,
+                 bell_length=None, name=None):
         self.units = units
         self.name = name
 
@@ -76,8 +77,21 @@ class Engine():
         self.gamma = gamma
         # geometric parameters
         self.lstar = lstar
-        self.area_ratio = area_ratio  # chamber contraction area ratio
+        if area_ratio is not None:
+            self.contraction_area_ratio = area_ratio  # chamber contraction area ratio
+        else:
+            self.contraction_area_ratio = 5  # nondimensional
 
+        if contraction_angle is not None:
+            self.contraction_angle = contraction_angle  # in degrees
+        else:
+            self.contraction_angle = 60 # degrees
+        
+        if bell_length is not None:
+            self.bell_length = bell_length
+        else:
+            self.bell_length = 0.8
+        
         if self.pa is None:
             self.pa = self.pe
 
@@ -85,10 +99,6 @@ class Engine():
         self.__Rbar = 8314  # [kJ/Kmol-K]
         self.__g0 = 9.81  # m/s^2
 
-        # default values for variables
-        self.contraction_angle = 60  # in degrees
-        self.contraction_area_ratio = 5  # nondimensional
-        self.bell_length = 0.8
 
     @property
     def name(self):
