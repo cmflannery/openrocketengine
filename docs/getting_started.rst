@@ -51,7 +51,7 @@ A typical configuration file looks like the following::
     MW 18.9
     gamma 2.31
     # Geometric parameters
-    lstar 40
+    lstar 1.016
     area_ratio 5.5
 
 
