@@ -7,18 +7,18 @@ from openrocketengine.core.rocket import Engine
 
 
 standard_types = {
-        'name': str,
-        'units': str,
-        'thrust': float,
-        'Tc': float,
-        'pc': float,
-        'pe': float,
-        'MR': float,
-        'MW': float,
-        'gamma': float,
-        'lstar': float,
-        'area_ratio': float
-        }
+    "name": str,
+    "units": str,
+    "thrust": float,
+    "Tc": float,
+    "pc": float,
+    "pe": float,
+    "MR": float,
+    "MW": float,
+    "gamma": float,
+    "lstar": float,
+    "area_ratio": float,
+}
 
 
 def read_config(fname):
@@ -30,16 +30,18 @@ def read_config(fname):
     Returns:
         dict: contains all parameters and values parsed and typecast
     """
-    assert os.path.isfile(fname), 'Error: {} does not exist in the working directory'.format(fname)
-    with open(fname, 'r') as f:
+    assert os.path.isfile(
+        fname
+    ), "Error: {} does not exist in the working directory".format(fname)
+    with open(fname, "r") as f:
         config = f.read()
 
-    statements = [s for s in config.split('\n') if s != '']  # ignore empty lines
-    parsed_config = [s for s in statements if s[0] != '#']  # ignore all comment lines
+    statements = [s for s in config.split("\n") if s != ""]  # ignore empty lines
+    parsed_config = [s for s in statements if s[0] != "#"]  # ignore all comment lines
     configuration = {}
     # Read the configuration file and store all key-value pairs in a dictionary
     for thing in parsed_config:
-        param_value = thing.split(' ')
+        param_value = thing.split(" ")
         try:
             parameter = param_value[0].rstrip().lstrip()
             value = param_value[1].rstrip().lstrip()
@@ -52,7 +54,9 @@ def read_config(fname):
         try:
             std_type = standard_types[key]
         except KeyError:
-            raise Exception('Error: {} is not a known configuration parameter'.format(key))
+            raise Exception(
+                "Error: {} is not a known configuration parameter".format(key)
+            )
 
         if std_type != type(configuration[key]):
             configuration[key] = std_type(configuration[key])
@@ -72,6 +76,5 @@ def entry():
     fire.Fire(main)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     fire.Fire(main)
-
