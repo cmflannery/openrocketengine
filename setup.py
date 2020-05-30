@@ -7,7 +7,7 @@ setup(
     version="0.0.1dev",
     description="A collection of tools used for high level rocket engine design.",
     url=["https://github.com/cmflannery/openrocketengine"],
-    packages=['openrocketengine', 'openrocketengine/core'],
+    packages=["openrocketengine", "openrocketengine/core"],
     install_requires=["numpy", "matplotlib", "pathlib"],
     entry_points={"console_scripts": []},
 )
